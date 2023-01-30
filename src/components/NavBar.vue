@@ -1,6 +1,7 @@
 <script>
 import { routerKey } from 'vue-router'
 import { useSessionStore } from '../stores/SessionStore'
+import router from '../router'
 
 export default {
   data() {
@@ -33,7 +34,7 @@ export default {
             <RouterLink class="nav-link px-2 text-secondary" to="/">Home</RouterLink>
           </li>
           <li>
-            <RouterLink class="nav-link px-2 text-white" to="/about">About</RouterLink>
+            <RouterLink class="nav-link px-2 text-secondary" to="/about">About</RouterLink>
           </li>
         </ul>
 
@@ -63,5 +64,10 @@ export default {
 
 .discordName {
   margin-right:10px;
+}
+
+.router-link-active {
+  font-weight: bold;
+  color:white !important;
 }
 </style>
