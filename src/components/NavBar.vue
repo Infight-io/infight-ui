@@ -1,10 +1,15 @@
-<script setup>
-defineProps({
-  currentTab: {
-    type: String,
-    required: true
+<script>
+import { useSessionStore } from '../stores/SessionStore'
+
+export default {
+  data() {
+    const store = useSessionStore()
+    console.log("isLogged: " + store.isLoggedIn)
+    return {
+      store
+    }
   }
-})
+}
 </script>
 
 <template>
@@ -19,8 +24,12 @@ defineProps({
           <li><RouterLink class="nav-link px-2 text-white" to="/about">About</RouterLink></li>
         </ul>
 
-        <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2">Login</button>
+        <div class="text-end" v-if="!store.isLoggedIn">
+          <a type="button" :href="this.$loginUrl" class="btn btn-outline-light me-2">Login</a>
+        </div>
+
+        <div class="text-end" v-if="store.isLoggedIn">
+          Logged in.
         </div>
       </div>
     </div>

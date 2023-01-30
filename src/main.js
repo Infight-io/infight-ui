@@ -11,4 +11,7 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 
+app.config.globalProperties.$apiHostname = 'http://localhost:3000'
+app.config.globalProperties.$loginUrl = app.config.globalProperties.$apiHostname + '/auth/discord'
+
 app.mount('#app')
