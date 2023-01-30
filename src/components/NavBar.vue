@@ -54,8 +54,9 @@ export default {
 
 <style scoped>
 .discordPic {
-  height: 50px;
-  width:50px;
+  --picSize: 40px;
+  height: var(--picSize);
+  width: var(--picSize);
   border-radius: 100%;
   margin-right: 10px;
 }
