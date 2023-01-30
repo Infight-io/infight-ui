@@ -21,11 +21,16 @@ export const useSessionStore = defineStore('session', {
       this.name = dJWT.username
       this.avatar = dJWT.avatar
 
+      localStorage.setItem('jwt', jwt)
       console.log(`Logged in ` + this.name)
 
     },
     logout() {
-      this.id++
+      localStorage.removeItem('jwt')
+      this.jwt = ''
+      this.id = 0
+      this.name = ''
+      this.avatar = ''
     },
   },
 })

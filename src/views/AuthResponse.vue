@@ -6,6 +6,7 @@ let urlParams = new URLSearchParams(window.location.search);
 
 const jwt = urlParams.get('jwt')
 store.login(jwt)
+//router.push('/')
 
 </script>
 
