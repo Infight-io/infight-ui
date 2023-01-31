@@ -24,7 +24,7 @@ export default {
 
 <template>
 
-  <header class="p-3 text-bg-dark">
+  <header class="p-3 text-bg-dark ifNavbar">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <div class="text-start">
@@ -36,7 +36,10 @@ export default {
             <RouterLink class="nav-link px-2 text-secondary" to="/">Home</RouterLink>
           </li>
           <li>
-            <RouterLink class="nav-link px-2 text-secondary" to="/about">About</RouterLink>
+            <RouterLink class="nav-link px-2 text-secondary" to="/games">My Games</RouterLink>
+          </li>
+          <li>
+            <RouterLink class="nav-link px-2 text-secondary" to="/leaderboards">Leaderboards</RouterLink>
           </li>
         </ul>
 
@@ -56,6 +59,9 @@ export default {
 </template>
 
 <style scoped>
+.ifNavbar {
+  background-color: #1a1d21 !important;
+}
 .navLogo {
   --picSize: 40px;
   height: var(--picSize);
