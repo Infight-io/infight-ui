@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
+import api from './plugins/InfightApi'
 
 import './assets/main.css'
 
@@ -13,5 +14,7 @@ app.use(router)
 
 app.config.globalProperties.$apiHostname = 'http://localhost:3000'
 app.config.globalProperties.$loginUrl = app.config.globalProperties.$apiHostname + '/auth/discord'
+
+app.use(api)
 
 app.mount('#app')
