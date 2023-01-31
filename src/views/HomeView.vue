@@ -6,7 +6,7 @@ import { h } from 'vue';
 
 <template>
   <main>
-    <h1>'scordWars lets you scheme with your friends</h1>
+    <h1>infight.io</h1>
     <p>It'll be fun</p>
   </main>
 </template>

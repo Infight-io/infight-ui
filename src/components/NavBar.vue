@@ -27,7 +27,9 @@ export default {
   <header class="p-3 text-bg-dark">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
+        <div class="text-start">
+          <img src="/infightLogoSmall.png" class="navLogo" alt="infight.io logo" />
+        </div>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li>
@@ -54,6 +56,14 @@ export default {
 </template>
 
 <style scoped>
+.navLogo {
+  --picSize: 40px;
+  height: var(--picSize);
+  width: var(--picSize);
+  border-radius: 20%;
+  margin-right: 10px;
+}
+
 .discordPic {
   --picSize: 40px;
   height: var(--picSize);
