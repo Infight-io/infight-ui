@@ -13,8 +13,6 @@ export default {
         store.login(localStorageJWT)
       }
     }
-
-    console.log("isLogged: " + store.isLoggedIn)
     return {
       store
     }
@@ -28,7 +26,7 @@ export default {
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <div class="text-start">
-          <img src="/infightLogoSmall.png" class="navLogo" alt="infight.io logo" />
+          <RouterLink to="/"><img src="/infightLogoSmall.png" class="navLogo" alt="infight.io logo" /></RouterLink>
         </div>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
