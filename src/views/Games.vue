@@ -1,6 +1,6 @@
 <script>
 import { useSessionStore } from '../stores/SessionStore'
-import AddToDiscordBtn from '../components/AddToDiscordBtn.vue'
+import DiscordBtn from '../components/DiscordBtn.vue'
 import DiscordServerIcon from '../components/DiscordServerIcon.vue'
 
 export default {
@@ -12,7 +12,7 @@ export default {
     }
   },
   components: {
-    AddToDiscordBtn, DiscordServerIcon
+    DiscordBtn, DiscordServerIcon
   },
   created() {
     if (this.sessionStore.isLoggedIn) {
@@ -44,7 +44,9 @@ export default {
             <DiscordServerIcon :serverId="team.id" :icon="team.icon" :name="team.name" />
             <strong class="display-6">{{ team.name }}</strong>
             <div class="discordBtnContainer">
-              <AddToDiscordBtn :serverId="team.id">Add to Discord</AddToDiscordBtn>
+              <DiscordBtn
+                url="https://discord.com/api/oauth2/authorize?client_id=1068711122556948490&permissions=275951650832&scope=bot%20applications.commands"
+                target="_blank">Add to Discord</DiscordBtn>
             </div>
           </div>
         </div>

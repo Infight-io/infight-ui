@@ -2,6 +2,7 @@
 import { routerKey } from 'vue-router'
 import { useSessionStore } from '../stores/SessionStore'
 import router from '../router'
+import DiscordBtn from '../components/DiscordBtn.vue'
 
 export default {
   data() {
@@ -16,6 +17,9 @@ export default {
     return {
       store
     }
+  },
+  components: {
+    DiscordBtn
   }
 }
 </script>
@@ -42,7 +46,8 @@ export default {
         </ul>
 
         <div class="text-end" v-if="!store.isLoggedIn">
-          <a type="button" :href="this.$loginUrl" class="btn btn-outline-light me-2">Login</a>
+          <!-- <a type="button" :href="this.$loginUrl" class="btn btn-outline-light me-2">Login</a> -->
+          <DiscordBtn :url="this.$loginUrl">Log In</DiscordBtn>
         </div>
 
         <div class="text-end" v-if="store.isLoggedIn">
