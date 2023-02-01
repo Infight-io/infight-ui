@@ -34,22 +34,46 @@ export default {
     <div class="container">
       <h1 class="mt-5">My Games</h1>
       <p class="lead">Every Discord server can have one game.</p>
-      <p>Invite infight to all of your servers!</p>
+
       <div v-if="!sessionStore.isLoggedIn">
         <h2>Log in to see your teams</h2>
       </div>
       <div v-else>
-          <div v-for="team in teams" class="">
-            <h2><DiscordServerIcon :serverId="team.id" :icon="team.icon" :name="team.name" />{{ team.name }}
-              <AddToDiscordBtn :serverId="team.id" />
-            </h2>
+        <div class="serverContainer">
+          <div v-for="team in teams" class="serverItem">
+            <DiscordServerIcon :serverId="team.id" :icon="team.icon" :name="team.name" />
+            <strong class="display-6">{{ team.name }}</strong>
+            <div class="discordBtnContainer">
+              <AddToDiscordBtn :serverId="team.id">Add to Discord</AddToDiscordBtn>
+            </div>
           </div>
-          <!-- https://cdn.discordapp.com/icons/880974616754012220/a_08d8e37712f1c7fa1383b162cf79cb3a.webp?size=96 -->
-      </div>880974616754012220
+        </div>
+      </div>
+
     </div>
   </main>
 </template>
 
 <style scoped>
+.serverContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.serverItem {
+  flex: 60%;
+  flex-wrap: nowrap;
+  border-radius: 20px;
+  border: solid 1px #36393f;
+  padding: 20px;
+  /* margin-left:20%; */
+  margin-bottom: 30px;
+}
+
+.discordBtnContainer {
+  float: right !important;
+  margin-top: 18px;
+}
 </style>
 
