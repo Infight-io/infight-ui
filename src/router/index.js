@@ -17,12 +17,12 @@ const router = createRouter({
     {
       path: '/games/:teamId/new',
       name: 'gameNew',
-      component: () => import('../views/newGame.vue')
+      component: () => import('../views/NewGame.vue')
     },
     {
       path: '/games/:teamId/:gameId',
       name: 'gameBoard',
-      component: () => import('../views/gameBoard.vue')
+      component: () => import('../views/GameBoard.vue')
     },
     {
       path: '/leaderboards',

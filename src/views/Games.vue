@@ -59,7 +59,7 @@ export default {
                 <a :href="'/games/'+ team.id + '/' + team.currentGameId">Go to game</a>
               </div>
               <div v-if="!team.currentGameId">
-                <a  :href="'/games/'+ team.id + '/new'">Go to game</a>
+                <a  :href="'/games/'+ team.id + '/new'">Create game</a>
               </div>
             </div>
             <div class="discordBtnContainer" v-if="!team.isConnected">
