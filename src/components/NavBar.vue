@@ -43,6 +43,9 @@ export default {
           <li>
             <RouterLink class="nav-link px-2 text-secondary" to="/leaderboards">Leaderboards</RouterLink>
           </li>
+          <li>
+            <RouterLink class="nav-link px-2 text-secondary" to="/FAQ">FAQ</RouterLink>
+          </li>
         </ul>
 
         <div class="text-end" v-if="!store.isLoggedIn">

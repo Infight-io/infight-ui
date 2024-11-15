@@ -33,6 +33,11 @@ const router = createRouter({
       path: '/authResponse',
       name: 'authresponse',
       component: () => import('../views/AuthResponse.vue')
+    },
+    {
+      path: '/FAQ',
+      name: 'faq',
+      component: () => import('../views/FAQ.vue')
     }
   ]
 })
