@@ -19,7 +19,18 @@ export default {
       this.$api.getMyGames()
         .then(servers => {
           console.log("filled servers", servers.data)
-          servers.data.sort((a, b) => a.name.localeCompare(b.name))
+          servers.data.sort((a, b) => {
+
+            if (a.isConnected && !b.isConnected) {
+              return -1;
+            } else if (!a.isConnected && b.isConnected) {
+              return 1;
+            } else {
+              // If boolean values are equal, sort by the string property
+              return a.name.localeCompare(b.name);
+            }
+
+          })
           this.teams = servers.data
         }).catch(err => {
           console.log("Error with getMyGames", err)
@@ -43,7 +54,15 @@ export default {
           <div v-for="team in teams" class="serverItem">
             <DiscordServerIcon :serverId="team.id" :icon="team.icon" :name="team.name" />
             <strong class="display-6">{{ team.name }}</strong>
-            <div class="discordBtnContainer">
+            <div class="discordBtnContainer" v-if="team.isConnected">
+              <div v-if="team.currentGameId">
+                <a :href="'/games/'+ team.id + '/' + team.currentGameId">Go to game</a>
+              </div>
+              <div v-if="!team.currentGameId">
+                <a  :href="'/games/'+ team.id + '/new'">Go to game</a>
+              </div>
+            </div>
+            <div class="discordBtnContainer" v-if="!team.isConnected">
               <DiscordBtn
                 url="https://discord.com/api/oauth2/authorize?client_id=1068711122556948490&permissions=275951650832&scope=bot%20applications.commands"
                 target="_blank">Add to Discord</DiscordBtn>
