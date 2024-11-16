@@ -11,11 +11,12 @@ export default {
     },
     methods: {
         startGame(event) {
+            const router = this.$router
             //alert(`teamid ${this.teamId}!`)
             this.$api.createGame(this.teamId, this.cycle, this.size)
                 .then(game => {
                     console.log("created game", game.data)
-                    this.router.push('/games/' + this.teamId + '/' + game.data.id)
+                    router.push('/games/' + game.data.GuildId + '/' + game.data.id)
                 }).catch(err => {
                     console.log("Error with createGame", err)
                 })
