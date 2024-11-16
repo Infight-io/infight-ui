@@ -65,7 +65,7 @@ export default {
             <div class="discordBtnContainer" v-if="!team.isConnected">
               <DiscordBtn
                 url="https://discord.com/api/oauth2/authorize?client_id=1068711122556948490&permissions=275951650832&scope=bot%20applications.commands"
-                target="_blank">Add to Discord</DiscordBtn>
+                target="_blank">Add to Discord</DiscordBtn><!-- TODO: bind that client_id to a config setting -->
             </div>
           </div>
         </div>
