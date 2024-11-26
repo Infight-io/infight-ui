@@ -2,9 +2,14 @@
 import { h } from 'vue';
 import { useSessionStore } from '../stores/SessionStore'
 import DiscordServerIcon from '../components/DiscordServerIcon.vue'
+import { useToast } from "vue-toastification";
 
 
 export default {
+    setup() {
+        const toast = useToast()
+        return { toast }
+    },
     created() {
         console.log('getting game game', this.$route.params.gameId)
         this.$api.getGame(this.$route.params.teamId, this.$route.params.gameId)
@@ -14,6 +19,7 @@ export default {
             })
             .catch(err => {
                 console.log('game get error', err)
+                this.toast.error("Could not load game", { timeout: false });
             })
     },
 
@@ -24,45 +30,83 @@ export default {
             sessionStore: store
         }
     },
-  components: {
-    DiscordServerIcon
-  },
+    methods: {
+        deleteGame(event) {
+            if (!confirm('Really Delete Game?')) {
+                return
+            }
+            const router = this.$router
+            //alert(`teamid ${this.teamId}!`)
+            this.$api.deleteGame(this.game.GuildId, this.game.id)
+                .then(res => {
+                    console.log("deleted game", res)
+                    router.push('/games/')
+                }).catch(err => {
+                    console.log("Error with createGame", err)
+                    this.toast.error("Error creating game.");
+                })
+        }
+    },
+    components: {
+        DiscordServerIcon
+    },
 }
 </script>
 
 <template>
     <main>
         <div class="container">
-            <h1 class="mt-5">Game</h1>
             <div>
-                <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon" :name="game.Guild.name" />
-                Game basics
-                - guild logo, name and link
-                - action distro countdown
-                - game roster
+
+                <h1 class="mt-5">
+                    <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
+                        :name="game.Guild.name" />{{ game.Guild.name }}
+                </h1>
+                <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">This is the current Active Game</h5>
+                <h6>Game is: {{ game.status }}, with {{ game.GamePlayers.length }} players</h6>
+
             </div>
 
             <div class="gameBoard"
-                :style="{ gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)'}">
-                <div>
+                :style="{ gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }">
+                <div class="gameBoardCell">
                     I'm a cell
                 </div>
             </div>
 
             <div class="actionPanel">
-                Player action panel
-                - modes: move, shoot, upgrade, trade
+                <input type="button" value="🏃 Move">
+                <input type="button" value="💥 Shoot">
+                <input type="button" value="🔧 Upgrade">
+                <input type="button" value="🎁 Gift AP">
             </div>
-
+            <div class="moveList">
+                <h3>Moves Made</h3>
+            </div>
+            <div>
+                <button @click="deleteGame">Delete Game</button>
+            </div>
         </div>
     </main>
 </template>
 
 <style scoped>
 .gameBoard {
-
     display: grid;
     grid-column-gap: 2px;
     grid-row-gap: 2px;
+}
+
+.gameBoardCell {
+    background-color: black;
+    width: 1fr;
+    height: 1fr;
+}
+
+.actionPanel {
+
+    input {
+        margin: 5px;
+    }
 }
 </style>

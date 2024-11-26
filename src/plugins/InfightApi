@@ -30,6 +30,12 @@ export default {
                     url: apiRoot + '/games/' + teamId + '/' + gameId,
                     method: 'get'
                 })
+            },
+            deleteGame: async function (teamId, gameId) {
+                return await axios({
+                    url: apiRoot + '/games/' + teamId + '/' + gameId,
+                    method: 'delete'
+                })
             }
         }
 
