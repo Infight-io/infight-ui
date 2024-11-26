@@ -17,12 +17,18 @@ export default {
             createGame: async function (teamId, cycleHours, boardSize) {
                 return await axios({
                     url: apiRoot + '/games/' + teamId + '/new',
-                    method:'post',
+                    method: 'post',
                     headers: { 'Authorization': store.jwt },
                     data: {
                         cycleHours: cycleHours,
-                        boardSize:boardSize
+                        boardSize: boardSize
                     }
+                })
+            },
+            getGame: async function (teamId, gameId) {
+                return await axios({
+                    url: apiRoot + '/games/' + teamId + '/' + gameId,
+                    method: 'get'
                 })
             }
         }
