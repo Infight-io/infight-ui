@@ -40,9 +40,9 @@ export default {
           <li>
             <RouterLink class="nav-link px-2 text-secondary" to="/games">My Games</RouterLink>
           </li>
-          <li>
+          <!-- <li>
             <RouterLink class="nav-link px-2 text-secondary" to="/leaderboards">Leaderboards</RouterLink>
-          </li>
+          </li> -->
           <li>
             <RouterLink class="nav-link px-2 text-secondary" to="/FAQ">FAQ</RouterLink>
           </li>
