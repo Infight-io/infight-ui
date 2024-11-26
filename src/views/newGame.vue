@@ -1,7 +1,12 @@
 <script>
 import { h } from 'vue';
+import { useToast } from "vue-toastification";
 
 export default {
+    setup() {
+      const toast = useToast()
+      return { toast }
+    },
     data() {
         return {
             cycle: 24,
@@ -19,6 +24,7 @@ export default {
                     router.push('/games/' + game.data.GuildId + '/' + game.data.id)
                 }).catch(err => {
                     console.log("Error with createGame", err)
+                    this.toast.error("Error creating game.");
                 })
         }
     }
