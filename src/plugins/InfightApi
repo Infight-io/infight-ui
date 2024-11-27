@@ -31,6 +31,12 @@ export default {
                     method: 'get'
                 })
             },
+            tickGame: async function (teamId, gameId) {
+                return await axios({
+                    url: apiRoot + '/games/' + teamId + '/' + gameId + '/tick',
+                    method: 'post'
+                })
+            },
             deleteGame: async function (teamId, gameId) {
                 return await axios({
                     url: apiRoot + '/games/' + teamId + '/' + gameId,

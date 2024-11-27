@@ -34,6 +34,18 @@ export default {
                     this.toast.error("Could not load game", { timeout: false });
                 })
         },
+        tickGame(event) {
+            const router = this.$router
+            //alert(`teamid ${this.teamId}!`)
+            this.$api.tickGame(this.game.GuildId, this.game.id)
+                .then(res => {
+                    console.log("ticked game", res)
+                    this.refreshGame()
+                }).catch(err => {
+                    console.log("Error with tickGame", err)
+                    this.toast.error("Error ticking game.");
+                })
+        },
         deleteGame(event) {
             if (!confirm('Really Delete Game?')) {
                 return
@@ -64,6 +76,32 @@ export default {
                     console.log("Error with startGame", err)
                     this.toast.error("Error creating game.");
                 })
+        },
+        setupMove(event) {
+            //identify the logged in player and its position
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            this.toast.info(this.sessionStore.id);
+            //loop around surrounding squares, adding move highlights
+        },
+        isCurrentUserPartOfThisGame() {
+            return this.getLoggedInGamePlayer() != null
+        },
+        getLoggedInGamePlayer() {
+            if (!this.sessionStore.id) return null
+
+            try {
+                for (let i = 0; i < this.game.GamePlayers.length; i++) {
+                    const gp = this.game.GamePlayers[i];
+                    if (gp.PlayerId == this.sessionStore.id) {
+                        return gp
+                    }
+                }
+            } catch (error) {
+                return null
+            }
+            return null
         }
     },
     components: {
@@ -89,8 +127,9 @@ export default {
             </div>
 
 
-            <div class="actionPanel">
-                <input type="button" value="🏃 Move">
+            <div class="actionPanel" v-if="isCurrentUserPartOfThisGame()">
+                You have {{ getLoggedInGamePlayer().actions }} Action Points (AP)
+                <input type="button" value="🏃 Move" @click="setupMove">
                 <input type="button" value="💥 Shoot">
                 <input type="button" value="🔧 Upgrade">
                 <input type="button" value="🎁 Gift AP">
@@ -112,6 +151,7 @@ export default {
                 <h3>Moves Made</h3>
             </div>
             <div>
+                <button @click="tickGame">Tick Game</button>
                 <button @click="deleteGame">Delete Game</button>
             </div>
         </div>
