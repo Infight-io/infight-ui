@@ -26,10 +26,10 @@ export default {
         </div>
         <div class="apDot">{{ GamePlayer.actions }}</div>
         <div class="heartContainer">
-            ❤️ ❤️ ❤️
+            <template v-for="n in GamePlayer.health"> ❤️ </template>
         </div>
         <div class="rangeContainer">
-            Range: 3
+            Range: {{GamePlayer.range}}
         </div>
     </div>
 </template>

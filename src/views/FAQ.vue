@@ -24,6 +24,12 @@ import { h } from 'vue';
                         the next game.
                     </p>
                 </div>
+                <div class="faqItem">
+                    <h4>How many players do I need?</h4>
+                    <p>The more the merrier! Infight is a game of coordination and intrigue. Games really start getting good
+                        at a dozen or more players and can be played with many dozens of players. 
+                    </p>
+                </div>
             </div>
 
         </div>

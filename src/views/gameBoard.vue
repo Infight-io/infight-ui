@@ -128,7 +128,7 @@ export default {
 }
 
 .gameBoardCell {
-    box-shadow: inset 0 0 10px #4848488b;
+    /* box-shadow: inset 0 0 10px #4848488b; */
     background-color: #212529;
     width: 1fr;
     height: 1fr;
