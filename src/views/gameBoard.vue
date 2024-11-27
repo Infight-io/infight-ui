@@ -83,32 +83,52 @@ export default {
             this.queuedAction = null
             this.targetSquares = []
         },
-        setupMove(event) {
-            //identify the logged in player and its position
-            if (!this.isCurrentUserPartOfThisGame) {
-                return
-            }
+        showMoveOptions(range) {
+
             const currentPlayer = this.getLoggedInGamePlayer()
             const originPoint = [currentPlayer.positionX, currentPlayer.positionY]
             const boardWidth = this.game.boardWidth
             const boardHeight = this.game.boardHeight
 
-            //loop around surrounding squares, adding move highlights
-            this.queuedAction = 'move'
             this.targetSquares = []
-            const range = 1;
+
+            //loop around surrounding squares, adding move highlights
+            //const range = 1;
             const negativeRangeExtent = range * -1;
             for (let x = negativeRangeExtent; x <= range; x++) {
                 for (let y = negativeRangeExtent; y <= range; y++) {
                     //make a highlight square
                     const targetX = originPoint[0] + x
                     const targetY = originPoint[1] + y
-                    if (targetX < 0 || targetX > boardWidth-1) continue
-                    if (targetY < 0 || targetY > boardHeight-1) continue
+                    if (targetX < 0 || targetX > boardWidth - 1) continue
+                    if (targetY < 0 || targetY > boardHeight - 1) continue
                     if (x == 0 && y == 0) continue
                     this.targetSquares.push([targetX, targetY])
-                } 
+                }
             }
+        },
+        setupMove(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            this.showMoveOptions(1)
+            this.queuedAction = 'move'
+        },
+        setupShoot(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            const currentPlayer = this.getLoggedInGamePlayer()
+            this.showMoveOptions(currentPlayer.range)
+            this.queuedAction = 'shoot'
+        },
+        setupGive(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            const currentPlayer = this.getLoggedInGamePlayer()
+            this.showMoveOptions(currentPlayer.range)
+            this.queuedAction = 'give'
         },
         actionTargetClick(event) {
             console.log('action tgt', event)
@@ -174,9 +194,9 @@ export default {
             <div class="actionPanel" v-if="isCurrentUserPartOfThisGame()">
                 You have {{ getLoggedInGamePlayer().actions }} Action Points (AP)
                 <input type="button" value="🏃 Move" @click="setupMove">
-                <input type="button" value="💥 Shoot">
+                <input type="button" value="💥 Shoot" @click="setupShoot">
+                <input type="button" value="🤝 Give AP" @click="setupGive">
                 <input type="button" value="🔧 Upgrade">
-                <input type="button" value="🤝 Give AP">
                 <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
             </div>
 
@@ -192,12 +212,9 @@ export default {
                 </template>
 
                 <template v-for="target in targetSquares">
-                    <div class="highlightCell"
-                        :style="{ gridColumnStart: target[0]+1, gridRowStart: target[1]+1 }"
-                        @click="actionTargetClick"
-                        :data-x="target[0]"
-                        :data-y="target[1]"
-                        ></div>
+                    <div :class="'highlightCell highlight_' + queuedAction"
+                        :style="{ gridColumnStart: target[0] + 1, gridRowStart: target[1] + 1 }" @click="actionTargetClick"
+                        :data-x="target[0]" :data-y="target[1]"></div>
                 </template>
             </div>
 
@@ -228,16 +245,38 @@ export default {
     height: 1fr;
     z-index: 10;
 }
+
 .highlightCell {
     z-index: 30;
     width: 1fr;
     height: 1fr;
-    background-color: rgba(0, 119, 255, 0.6);
     cursor: pointer;
 }
-.highlightCell:hover { 
+
+.highlight_move {
+    background-color: rgba(0, 119, 255, 0.6);
+}
+
+.highlight_move:hover {
     background-color: rgba(0, 119, 255, 0.8);
 }
+
+.highlight_shoot {
+    background-color: rgba(255, 0, 0, 0.4);
+}
+
+.highlight_shoot:hover {
+    background-color: rgba(255, 0, 0, 0.6);
+}
+
+.highlight_give {
+    background-color: rgba(0, 255, 17, 0.4);
+}
+
+.highlight_give:hover {
+    background-color: rgba(0, 255, 17, 0.6);
+}
+
 .actionPanel {
 
     input {
