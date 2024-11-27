@@ -36,8 +36,10 @@ export default {
 
 <style scoped>
 .gamePiece {
-
+    /* background-color: #212529; */
     aspect-ratio: 1;
+    margin:5px;
+    z-index: 20;
 }
 .avatarBg {
     border-radius: 100%;

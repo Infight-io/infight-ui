@@ -25,14 +25,14 @@ export default {
         refreshGame() {
             console.log('getting game game', this.$route.params.gameId)
             this.$api.getGame(this.$route.params.teamId, this.$route.params.gameId)
-            .then(res => {
-                console.log('got game', res.data)
-                this.game = res.data
-            })
-            .catch(err => {
-                console.log('game get error', err)
-                this.toast.error("Could not load game", { timeout: false });
-            })
+                .then(res => {
+                    console.log('got game', res.data)
+                    this.game = res.data
+                })
+                .catch(err => {
+                    console.log('game get error', err)
+                    this.toast.error("Could not load game", { timeout: false });
+                })
         },
         deleteGame(event) {
             if (!confirm('Really Delete Game?')) {
@@ -100,6 +100,12 @@ export default {
                 :style="{ gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }">
 
                 <GamePiece v-for="gp in game.GamePlayers" :GamePlayer="gp" />
+
+                <template v-for="x in game.boardWidth">
+                    <template v-for="y in game.boardHeight">
+                        <div class="gameBoardCell" :style="{ gridRowStart: x, gridColumnStart: y }"></div>
+                    </template>
+                </template>
             </div>
 
             <div class="moveList">
@@ -115,14 +121,18 @@ export default {
 <style scoped>
 .gameBoard {
     display: grid;
-    grid-column-gap: 5px;
-    grid-row-gap: 5px;
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    background-color: #40474f;
+    border: 2px solid #40474f;
 }
 
 .gameBoardCell {
-    background-color: black;
+    box-shadow: inset 0 0 10px #4848488b;
+    background-color: #212529;
     width: 1fr;
     height: 1fr;
+    z-index: 10;
 }
 
 .actionPanel {
