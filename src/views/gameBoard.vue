@@ -2,8 +2,8 @@
 import { h } from 'vue';
 import { useSessionStore } from '../stores/SessionStore'
 import DiscordServerIcon from '../components/DiscordServerIcon.vue'
-import { useToast } from "vue-toastification";
-
+import { useToast } from "vue-toastification"
+import GamePiece from '../components/GamePiece.vue'
 
 export default {
     setup() {
@@ -48,7 +48,8 @@ export default {
         }
     },
     components: {
-        DiscordServerIcon
+        DiscordServerIcon,
+        GamePiece
     },
 }
 </script>
@@ -69,9 +70,8 @@ export default {
 
             <div class="gameBoard"
                 :style="{ gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }">
-                <div class="gameBoardCell">
-                    I'm a cell
-                </div>
+
+                <GamePiece v-for="gp in game.GamePlayers" :GamePlayer="gp" />
             </div>
 
             <div class="actionPanel">
