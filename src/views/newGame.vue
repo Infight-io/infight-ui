@@ -51,12 +51,22 @@ export default {
                     <input type="radio" name="cycle" value="8" id="cycle8" v-model="cycle"> <label for="cycle8">8
                         Hours</label>
                 </div>
+                <div class="optionItem">
+                    <input type="radio" name="cycle" value="1" id="cycle1" v-model="cycle"> <label for="cycle1">1
+                        Hour</label>
+                </div>
             </div>
 
 
 
             <h2>Map Size</h2>
             <div class="optionContainer">
+                <div class="optionItem">
+                    <input type="radio" name="mapsize" value="5" id="mapsize5" v-model="size"> <label
+                        for="mapsize5">Tiny:
+                        5 x
+                        5</label>
+                </div>
                 <div class="optionItem">
                     <input type="radio" name="mapsize" value="10" id="mapsize10" v-model="size"> <label
                         for="mapsize10">Small:
