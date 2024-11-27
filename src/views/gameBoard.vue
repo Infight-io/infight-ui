@@ -11,16 +11,7 @@ export default {
         return { toast }
     },
     created() {
-        console.log('getting game game', this.$route.params.gameId)
-        this.$api.getGame(this.$route.params.teamId, this.$route.params.gameId)
-            .then(res => {
-                console.log('got game', res.data)
-                this.game = res.data
-            })
-            .catch(err => {
-                console.log('game get error', err)
-                this.toast.error("Could not load game", { timeout: false });
-            })
+        this.refreshGame()
     },
 
     data() {
@@ -31,6 +22,18 @@ export default {
         }
     },
     methods: {
+        refreshGame() {
+            console.log('getting game game', this.$route.params.gameId)
+            this.$api.getGame(this.$route.params.teamId, this.$route.params.gameId)
+            .then(res => {
+                console.log('got game', res.data)
+                this.game = res.data
+            })
+            .catch(err => {
+                console.log('game get error', err)
+                this.toast.error("Could not load game", { timeout: false });
+            })
+        },
         deleteGame(event) {
             if (!confirm('Really Delete Game?')) {
                 return
@@ -43,6 +46,22 @@ export default {
                     router.push('/games/')
                 }).catch(err => {
                     console.log("Error with createGame", err)
+                    this.toast.error("Error creating game.");
+                })
+        },
+        startGame(event) {
+            if (!confirm('Really Begin Game? player list will be locked.')) {
+                return
+            }
+            const router = this.$router
+            //alert(`teamid ${this.teamId}!`)
+            this.$api.startGame(this.game.GuildId, this.game.id)
+                .then(res => {
+                    console.log("started game", res)
+                    this.toast.success("Game started!");
+                    this.refreshGame()
+                }).catch(err => {
+                    console.log("Error with startGame", err)
                     this.toast.error("Error creating game.");
                 })
         }
@@ -58,14 +77,23 @@ export default {
     <main>
         <div class="container">
             <div>
-
                 <h1 class="mt-5">
                     <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
                         :name="game.Guild.name" />{{ game.Guild.name }}
                 </h1>
                 <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">This is the current Active Game</h5>
                 <h6>Game is: {{ game.status }}, with {{ game.GamePlayers.length }} players</h6>
+                <div v-if="game.status == 'new'">
+                    <input type="button" value="Start Game" @click="startGame" />
+                </div>
+            </div>
 
+
+            <div class="actionPanel">
+                <input type="button" value="🏃 Move">
+                <input type="button" value="💥 Shoot">
+                <input type="button" value="🔧 Upgrade">
+                <input type="button" value="🎁 Gift AP">
             </div>
 
             <div class="gameBoard"
@@ -74,12 +102,6 @@ export default {
                 <GamePiece v-for="gp in game.GamePlayers" :GamePlayer="gp" />
             </div>
 
-            <div class="actionPanel">
-                <input type="button" value="🏃 Move">
-                <input type="button" value="💥 Shoot">
-                <input type="button" value="🔧 Upgrade">
-                <input type="button" value="🎁 Gift AP">
-            </div>
             <div class="moveList">
                 <h3>Moves Made</h3>
             </div>
@@ -93,8 +115,8 @@ export default {
 <style scoped>
 .gameBoard {
     display: grid;
-    grid-column-gap: 2px;
-    grid-row-gap: 2px;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
 }
 
 .gameBoardCell {

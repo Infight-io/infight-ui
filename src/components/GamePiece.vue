@@ -20,7 +20,7 @@ export default {
 </script>
 
 <template>
-    <div class="gamePiece">
+    <div class="gamePiece" :style="{gridColumnStart: GamePlayer.positionX + 1, gridRowStart: GamePlayer.positionY+ 1}">
         <div class="avatarBg" :style="{backgroundImage:'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)'}">
 
         </div>
