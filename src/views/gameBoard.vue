@@ -109,8 +109,6 @@ export default {
                     this.targetSquares.push([targetX, targetY])
                 } 
             }
-
-
         },
         actionTargetClick(event) {
             console.log('action tgt', event)
@@ -118,9 +116,18 @@ export default {
             const targetX = src.dataset.x
             const targetY = src.dataset.y
 
-            this.toast.info(this.queuedAction + ' targeted ' + targetX + ', ' + targetY)
+            // this.toast.info(this.queuedAction + ' targeted ' + targetX + ', ' + targetY)
 
-            
+            this.$api.actInGame(this.game.GuildId, this.game.id, this.queuedAction, targetX, targetY)
+                .then(res => {
+                    console.log("acted in game", res)
+                    this.toast.success("Action Made!");
+                    this.cancelMove()
+                    this.refreshGame()
+                }).catch(err => {
+                    console.log("Error with actInGame", err)
+                    this.toast.error(err.response.data);
+                })
         },
         isCurrentUserPartOfThisGame() {
             return this.getLoggedInGamePlayer() != null
@@ -169,7 +176,7 @@ export default {
                 <input type="button" value="🏃 Move" @click="setupMove">
                 <input type="button" value="💥 Shoot">
                 <input type="button" value="🔧 Upgrade">
-                <input type="button" value="🤝 Give an AP">
+                <input type="button" value="🤝 Give AP">
                 <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
             </div>
 

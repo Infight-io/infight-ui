@@ -48,6 +48,18 @@ export default {
                     url: apiRoot + '/games/' + teamId + '/' + gameId + '/start',
                     method: 'post'
                 })
+            },
+            actInGame: async function (teamId, gameId, action, targetX, targetY) {
+                return await axios({
+                    url: apiRoot + '/games/' + teamId + '/' + gameId + '/act',
+                    method: 'post',
+                    headers: { 'Authorization': store.jwt },
+                    data: {
+                        action: action,
+                        targetX: targetX,
+                        targetY: targetY
+                    }
+                })
             }
         }
 
