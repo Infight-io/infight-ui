@@ -18,7 +18,9 @@ export default {
         const store = useSessionStore()
         return {
             game: {},
-            sessionStore: store
+            sessionStore: store,
+            targetSquares: [],
+            queuedAction: null
         }
     },
     methods: {
@@ -77,13 +79,48 @@ export default {
                     this.toast.error("Error creating game.");
                 })
         },
+        cancelMove() {
+            this.queuedAction = null
+            this.targetSquares = []
+        },
         setupMove(event) {
             //identify the logged in player and its position
             if (!this.isCurrentUserPartOfThisGame) {
                 return
             }
-            this.toast.info(this.sessionStore.id);
+            const currentPlayer = this.getLoggedInGamePlayer()
+            const originPoint = [currentPlayer.positionX, currentPlayer.positionY]
+            const boardWidth = this.game.boardWidth
+            const boardHeight = this.game.boardHeight
+
             //loop around surrounding squares, adding move highlights
+            this.queuedAction = 'move'
+            this.targetSquares = []
+            const range = 1;
+            const negativeRangeExtent = range * -1;
+            for (let x = negativeRangeExtent; x <= range; x++) {
+                for (let y = negativeRangeExtent; y <= range; y++) {
+                    //make a highlight square
+                    const targetX = originPoint[0] + x
+                    const targetY = originPoint[1] + y
+                    if (targetX < 0 || targetX > boardWidth-1) continue
+                    if (targetY < 0 || targetY > boardHeight-1) continue
+                    if (x == 0 && y == 0) continue
+                    this.targetSquares.push([targetX, targetY])
+                } 
+            }
+
+
+        },
+        actionTargetClick(event) {
+            console.log('action tgt', event)
+            const src = event.srcElement
+            const targetX = src.dataset.x
+            const targetY = src.dataset.y
+
+            this.toast.info(this.queuedAction + ' targeted ' + targetX + ', ' + targetY)
+
+            
         },
         isCurrentUserPartOfThisGame() {
             return this.getLoggedInGamePlayer() != null
@@ -132,7 +169,8 @@ export default {
                 <input type="button" value="🏃 Move" @click="setupMove">
                 <input type="button" value="💥 Shoot">
                 <input type="button" value="🔧 Upgrade">
-                <input type="button" value="🎁 Gift AP">
+                <input type="button" value="🤝 Give an AP">
+                <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
             </div>
 
             <div class="gameBoard"
@@ -145,11 +183,20 @@ export default {
                         <div class="gameBoardCell" :style="{ gridRowStart: x, gridColumnStart: y }"></div>
                     </template>
                 </template>
+
+                <template v-for="target in targetSquares">
+                    <div class="highlightCell"
+                        :style="{ gridColumnStart: target[0]+1, gridRowStart: target[1]+1 }"
+                        @click="actionTargetClick"
+                        :data-x="target[0]"
+                        :data-y="target[1]"
+                        ></div>
+                </template>
             </div>
 
-            <div class="moveList">
+            <!-- <div class="moveList">
                 <h3>Moves Made</h3>
-            </div>
+            </div> -->
             <div>
                 <button @click="tickGame">Tick Game</button>
                 <button @click="deleteGame">Delete Game</button>
@@ -174,7 +221,16 @@ export default {
     height: 1fr;
     z-index: 10;
 }
-
+.highlightCell {
+    z-index: 30;
+    width: 1fr;
+    height: 1fr;
+    background-color: rgba(0, 119, 255, 0.6);
+    cursor: pointer;
+}
+.highlightCell:hover { 
+    background-color: rgba(0, 119, 255, 0.8);
+}
 .actionPanel {
 
     input {
