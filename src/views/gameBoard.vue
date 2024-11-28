@@ -114,6 +114,15 @@ export default {
             this.showMoveOptions(1)
             this.queuedAction = 'move'
         },
+        setupUpgrade(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            if (confirm("Are you sure you want to upgrade your range?")) {
+                this.queuedAction = 'upgrade'
+                this.actionTargetClick(event)
+            }
+        },
         setupShoot(event) {
             if (!this.isCurrentUserPartOfThisGame) {
                 return
@@ -140,7 +149,7 @@ export default {
 
             this.$api.actInGame(this.game.GuildId, this.game.id, this.queuedAction, targetX, targetY)
                 .then(res => {
-                    console.log("acted in game", res)
+                    console.log("Acted!", res)
                     this.toast.success("Action Made!");
                     this.cancelMove()
                     this.refreshGame()
@@ -196,14 +205,16 @@ export default {
                 <input type="button" value="🏃 Move" @click="setupMove">
                 <input type="button" value="💥 Shoot" @click="setupShoot">
                 <input type="button" value="🤝 Give AP" @click="setupGive">
-                <input type="button" value="🔧 Upgrade">
+                <input type="button" value="🔧 Upgrade" @click="setupUpgrade" v-if="getLoggedInGamePlayer().range < 3">
                 <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
             </div>
 
             <div class="gameBoard"
                 :style="{ gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }">
 
-                <GamePiece v-for="gp in game.GamePlayers" :GamePlayer="gp" />
+                <template v-for="gp in game.GamePlayers">
+                    <GamePiece :GamePlayer="gp" v-if="gp.status == 'alive'" />
+                </template>
 
                 <template v-for="x in game.boardWidth">
                     <template v-for="y in game.boardHeight">
