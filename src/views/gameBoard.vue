@@ -123,6 +123,15 @@ export default {
                 this.actionTargetClick(event)
             }
         },
+        setupHeal(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            if (confirm("Are you sure you want to add a heart?")) {
+                this.queuedAction = 'heal'
+                this.actionTargetClick(event)
+            }
+        },
         setupShoot(event) {
             if (!this.isCurrentUserPartOfThisGame) {
                 return
@@ -158,10 +167,11 @@ export default {
             this.$api.actInGame(this.game.GuildId, this.game.id, this.queuedAction, targetX, targetY)
                 .then(res => {
                     console.log("Acted!", res)
-                    this.toast.success("Action Made!");
+                    this.toast.success(res.data);
                     this.cancelMove()
                     this.refreshGame()
                 }).catch(err => {
+                    this.cancelMove()
                     console.log("Error with actInGame", err)
                     this.toast.error(err.response.data);
                 })
@@ -208,13 +218,14 @@ export default {
             </div>
 
 
-            <div class="actionPanel" v-if="isCurrentUserPartOfThisGame()">
+            <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status =='active'">
                 You have {{ getLoggedInGamePlayer().actions }} Action Points (AP)
-                <input type="button" value="🏃 Move" @click="setupMove">
-                <input type="button" value="💥 Shoot" @click="setupShoot">
-                <input type="button" value="🤝 Give AP" @click="setupGiveAP">
-                <input type="button" value="💌 Give HP" @click="setupGiveHP">
-                <input type="button" value="🔧 Upgrade" @click="setupUpgrade" v-if="getLoggedInGamePlayer().range < 3">
+                <input type="button" value="🏃 Move (1 AP)" @click="setupMove">
+                <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot">
+                <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal">
+                <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP">
+                <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP">
+                <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade">
                 <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
             </div>
 
@@ -222,7 +233,7 @@ export default {
                 :style="{ gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }">
 
                 <template v-for="gp in game.GamePlayers">
-                    <GamePiece :GamePlayer="gp" v-if="gp.status == 'alive'" />
+                    <GamePiece :GamePlayer="gp" />
                 </template>
 
                 <template v-for="x in game.boardWidth">

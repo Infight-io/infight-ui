@@ -27,6 +27,7 @@ export default {
         <div class="apDot">{{ GamePlayer.actions }}</div>
         <div class="heartContainer">
             <template v-for="n in GamePlayer.health"> ❤️ </template>
+            <template v-if="GamePlayer.health == 0">☠️</template>
         </div>
         <div class="rangeContainer">
             Range: {{GamePlayer.range}}
