@@ -179,6 +179,15 @@ export default {
         isCurrentUserPartOfThisGame() {
             return this.getLoggedInGamePlayer() != null
         },
+        hoursUntilNextTick() {
+            const now = new Date()
+            const targetDate = new Date(this.game.nextTickTime)
+
+            const timeDifference = targetDate.getTime() - now.getTime()
+            const hoursDifference = timeDifference / (1000 * 60 * 60)
+
+            return hoursDifference.toFixed(1)
+        },
         getLoggedInGamePlayer() {
             if (!this.sessionStore.id) return null
 
@@ -212,6 +221,7 @@ export default {
                 </h1>
                 <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">This is the current Active Game</h5>
                 <h6>Game is: {{ game.status }}, with {{ game.GamePlayers.length }} players</h6>
+                Next AP assigned in: ~{{ hoursUntilNextTick() }} hours
                 <div v-if="game.status == 'new'">
                     <input type="button" value="Start Game" @click="startGame" />
                 </div>
@@ -219,13 +229,13 @@ export default {
 
 
             <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status =='active'">
-                You have {{ getLoggedInGamePlayer().actions }} Action Points (AP)
-                <input type="button" value="🏃 Move (1 AP)" @click="setupMove">
-                <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot">
-                <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal">
-                <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP">
-                <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP">
-                <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade">
+                <div>You have <strong>{{ getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
+                <input type="button" value="🏃 Move (1 AP)" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" />
+                <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" >
+                <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1">
+                <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2">
+                <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3">
+                <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3">
                 <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
             </div>
 
