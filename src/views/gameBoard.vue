@@ -131,13 +131,21 @@ export default {
             this.showMoveOptions(currentPlayer.range)
             this.queuedAction = 'shoot'
         },
-        setupGive(event) {
+        setupGiveAP(event) {
             if (!this.isCurrentUserPartOfThisGame) {
                 return
             }
             const currentPlayer = this.getLoggedInGamePlayer()
             this.showMoveOptions(currentPlayer.range)
-            this.queuedAction = 'give'
+            this.queuedAction = 'giveAP'
+        },
+        setupGiveHP(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            const currentPlayer = this.getLoggedInGamePlayer()
+            this.showMoveOptions(currentPlayer.range)
+            this.queuedAction = 'giveHP'
         },
         actionTargetClick(event) {
             console.log('action tgt', event)
@@ -204,7 +212,8 @@ export default {
                 You have {{ getLoggedInGamePlayer().actions }} Action Points (AP)
                 <input type="button" value="🏃 Move" @click="setupMove">
                 <input type="button" value="💥 Shoot" @click="setupShoot">
-                <input type="button" value="🤝 Give AP" @click="setupGive">
+                <input type="button" value="🤝 Give AP" @click="setupGiveAP">
+                <input type="button" value="💌 Give HP" @click="setupGiveHP">
                 <input type="button" value="🔧 Upgrade" @click="setupUpgrade" v-if="getLoggedInGamePlayer().range < 3">
                 <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
             </div>
@@ -247,6 +256,7 @@ export default {
     grid-row-gap: 2px;
     background-color: #40474f;
     border: 2px solid #40474f;
+    max-width: 1000px;
 }
 
 .gameBoardCell {
@@ -280,12 +290,20 @@ export default {
     background-color: rgba(255, 0, 0, 0.6);
 }
 
-.highlight_give {
+.highlight_giveAP {
     background-color: rgba(0, 255, 17, 0.4);
 }
 
-.highlight_give:hover {
+.highlight_giveAP:hover {
     background-color: rgba(0, 255, 17, 0.6);
+}
+
+.highlight_giveHP {
+    background-color: rgba(238, 0, 255, 0.4);
+}
+
+.highlight_giveHP:hover {
+    background-color: rgba(238, 0, 255, 0.6);
 }
 
 .actionPanel {
