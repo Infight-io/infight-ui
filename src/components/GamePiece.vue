@@ -24,11 +24,12 @@ export default {
         <div class="avatarBg" :style="{backgroundImage:'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)'}">
 
         </div>
-        <div class="apDot">{{ GamePlayer.actions }}</div>
+        <div class="apDot" v-if="GamePlayer.actions">{{ GamePlayer.actions }}</div>
         <div class="heartContainer">
             <template v-for="n in GamePlayer.health"> ❤️ </template>
-            <template v-if="GamePlayer.health == 0">☠️</template>
         </div>
+        <div class="deathContainer" v-if="GamePlayer.health == 0"> ☠️ </div>
+
         <div class="rangeContainer">
             Range: {{GamePlayer.range}}
         </div>
@@ -79,6 +80,14 @@ export default {
     padding-top:55%;
     width:100%;
     text-shadow: 0px 0px 4px black;
+}
+.deathContainer {
+    text-align: center;
+    font-size: 60pt;
+    position: absolute;
+    padding-top:15%;
+    width:100%;
+    text-shadow: 0px 0px 20px black;
 }
 
 

@@ -14,13 +14,13 @@ export default {
                     headers: { 'Authorization': store.jwt }
                 })
             },
-            createGame: async function (teamId, cycleHours, boardSize) {
+            createGame: async function (teamId, cycleMinutes, boardSize) {
                 return await axios({
                     url: apiRoot + '/games/' + teamId + '/new',
                     method: 'post',
                     headers: { 'Authorization': store.jwt },
                     data: {
-                        cycleHours: cycleHours,
+                        cycleMinutes: cycleMinutes,
                         boardSize: boardSize
                     }
                 })

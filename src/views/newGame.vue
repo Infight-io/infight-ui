@@ -44,16 +44,19 @@ export default {
                 their range.</p>
             <div class="optionContainer">
                 <div class="optionItem">
-                    <input type="radio" name="cycle" value="24" id="cycle24" v-model="cycle"> <label for="cycle24">24
+                    <input type="radio" name="cycle" value="1440" id="cycle24" v-model="cycle"> <label for="cycle24">24
                         Hours</label>
                 </div>
                 <div class="optionItem">
-                    <input type="radio" name="cycle" value="8" id="cycle8" v-model="cycle"> <label for="cycle8">8
+                    <input type="radio" name="cycle" value="480" id="cycle8" v-model="cycle"> <label for="cycle8">8
                         Hours</label>
                 </div>
                 <div class="optionItem">
-                    <input type="radio" name="cycle" value="1" id="cycle1" v-model="cycle"> <label for="cycle1">1
+                    <input type="radio" name="cycle" value="60" id="cycle1" v-model="cycle"> <label for="cycle1">1
                         Hour</label>
+                </div>
+                <div class="optionItem">
+                    <input type="radio" name="cycle" value="1" id="cycle1" v-model="cycle"> <label for="cycle1">1 Minutes</label>
                 </div>
             </div>
 
