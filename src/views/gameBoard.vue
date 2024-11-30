@@ -214,29 +214,36 @@ export default {
 <template>
     <main>
         <div class="container">
-            <div>
-                <h1 class="mt-5">
+
+            <div class="gameBar">
+                <h3 class="mt-5">
                     <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
                         :name="game.Guild.name" />{{ game.Guild.name }}
-                </h1>
+                </h3>
                 <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">This is the current Active Game</h5>
                 <h6>Game is: {{ game.status }}, with {{ game.GamePlayers.length }} players</h6>
                 Next AP assigned in: ~{{ hoursUntilNextTick() }} hours
                 <div v-if="game.status == 'new'">
                     <input type="button" value="Start Game" @click="startGame" />
                 </div>
-            </div>
 
 
-            <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status =='active'">
-                <div>You have <strong>{{ getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
-                <input type="button" value="🏃 Move (1 AP)" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" />
-                <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" >
-                <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1">
-                <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2">
-                <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3">
-                <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3">
-                <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
+                <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status =='active'">
+                    <div>You have <strong>{{ getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
+                    <input type="button" value="🏃 Move (1 AP)" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" />
+                    <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" >
+                    <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1">
+                    <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2">
+                    <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3">
+                    <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3">
+                    <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
+                </div>
+
+
+                <div>
+                    <button @click="tickGame">Tick Game</button>
+                    <button @click="deleteGame">Delete Game</button>
+                </div>
             </div>
 
             <div class="gameBoard"
@@ -262,22 +269,42 @@ export default {
             <!-- <div class="moveList">
                 <h3>Moves Made</h3>
             </div> -->
-            <div>
-                <button @click="tickGame">Tick Game</button>
-                <button @click="deleteGame">Delete Game</button>
-            </div>
         </div>
     </main>
 </template>
 
 <style scoped>
+
+.gameBar {
+  width: 300px;
+  /* background-color: #2b2b2b; */
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
 .gameBoard {
+    margin-left: 300px;
     display: grid;
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     background-color: #40474f;
     border: 2px solid #40474f;
     max-width: 1000px;
+}
+
+@media screen and (max-width: 900px) {
+  .gameBar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .gameBoard {margin-left: 0;}
+}
+
+@media screen and (max-width: 400px) {
+  
+    
 }
 
 .gameBoardCell {
