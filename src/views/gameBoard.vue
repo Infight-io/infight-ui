@@ -10,8 +10,13 @@ export default {
         const toast = useToast()
         return { toast }
     },
-    created() {
+    async created() {
         this.refreshGame()
+        const sse = await this.$api.connectToGameEvents(this.$route.params.teamId, this.$route.params.gameId)
+        sse.addEventListener("message", ({ data }) => {
+            console.log(JSON.parse(data));
+            this.refreshGame()
+        })
     },
 
     data() {
@@ -228,14 +233,20 @@ export default {
                 </div>
 
 
-                <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status =='active'">
+                <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
                     <div>You have <strong>{{ getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
-                    <input type="button" value="🏃 Move (1 AP)" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" />
-                    <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" >
-                    <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1">
-                    <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2">
-                    <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3">
-                    <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3">
+                    <input type="button" value="🏃 Move (1 AP)" @click="setupMove"
+                        :disabled="getLoggedInGamePlayer().actions < 1" />
+                    <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot"
+                        :disabled="getLoggedInGamePlayer().actions < 1">
+                    <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP"
+                        :disabled="getLoggedInGamePlayer().actions < 1">
+                    <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP"
+                        :disabled="getLoggedInGamePlayer().health < 2">
+                    <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal"
+                        :disabled="getLoggedInGamePlayer().actions < 3">
+                    <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade"
+                        :disabled="getLoggedInGamePlayer().actions < 3">
                     <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
                 </div>
 
@@ -261,8 +272,8 @@ export default {
 
                 <template v-for="target in targetSquares">
                     <div :class="'highlightCell highlight_' + queuedAction"
-                        :style="{ gridColumnStart: target[0] + 1, gridRowStart: target[1] + 1 }" @click="actionTargetClick"
-                        :data-x="target[0]" :data-y="target[1]"></div>
+                        :style="{ gridColumnStart: target[0] + 1, gridRowStart: target[1] + 1 }"
+                        @click="actionTargetClick" :data-x="target[0]" :data-y="target[1]"></div>
                 </template>
             </div>
 
@@ -274,13 +285,12 @@ export default {
 </template>
 
 <style scoped>
-
 .gameBar {
-  width: 300px;
-  /* background-color: #2b2b2b; */
-  position: fixed;
-  height: 100%;
-  overflow: auto;
+    width: 300px;
+    /* background-color: #2b2b2b; */
+    position: fixed;
+    height: 100%;
+    overflow: auto;
 }
 
 .gameBoard {
@@ -294,18 +304,18 @@ export default {
 }
 
 @media screen and (max-width: 900px) {
-  .gameBar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .gameBoard {margin-left: 0;}
+    .gameBar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .gameBoard {
+        margin-left: 0;
+    }
 }
 
-@media screen and (max-width: 400px) {
-  
-    
-}
+@media screen and (max-width: 400px) {}
 
 .gameBoardCell {
     /* box-shadow: inset 0 0 10px #4848488b; */

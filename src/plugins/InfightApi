@@ -49,6 +49,13 @@ export default {
                     method: 'post'
                 })
             },
+            connectToGameEvents: async function (teamId, gameId) {
+                const sse = new EventSource(apiRoot + '/games/' + teamId + '/' + gameId + '/events');
+                return sse;
+                sse.addEventListener("message", ({ data }) => {
+                    console.log(JSON.parse(data));
+                })
+            },
             actInGame: async function (teamId, gameId, action, targetX, targetY) {
                 return await axios({
                     url: apiRoot + '/games/' + teamId + '/' + gameId + '/act',
