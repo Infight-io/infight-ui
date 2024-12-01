@@ -25,12 +25,13 @@ export default {
             game: {},
             sessionStore: store,
             targetSquares: [],
-            queuedAction: null
+            queuedAction: null,
+            loggedInPlayerId: null
         }
     },
     methods: {
         refreshGame() {
-            console.log('getting game game', this.$route.params.gameId)
+            console.log('getting game', this.$route.params.gameId)
             this.$api.getGame(this.$route.params.teamId, this.$route.params.gameId)
                 .then(res => {
                     console.log('got game', res.data)
@@ -96,9 +97,6 @@ export default {
             const boardHeight = this.game.boardHeight
 
             this.targetSquares = []
-
-            //loop around surrounding squares, adding move highlights
-            //const range = 1;
             const negativeRangeExtent = range * -1;
             for (let x = negativeRangeExtent; x <= range; x++) {
                 for (let y = negativeRangeExtent; y <= range; y++) {
@@ -252,6 +250,7 @@ export default {
 
 
                 <div>
+                    <h5>Dev Tools</h5>
                     <button @click="tickGame">Tick Game</button>
                     <button @click="deleteGame">Delete Game</button>
                 </div>
@@ -261,7 +260,7 @@ export default {
                 :style="{ gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }">
 
                 <template v-for="gp in game.GamePlayers">
-                    <GamePiece :GamePlayer="gp" />
+                    <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.id" />
                 </template>
 
                 <template v-for="x in game.boardWidth">
@@ -276,10 +275,33 @@ export default {
                         @click="actionTargetClick" :data-x="target[0]" :data-y="target[1]"></div>
                 </template>
             </div>
-
-            <!-- <div class="moveList">
+<!-- 
+            <div class="moveList">
                 <h3>Moves Made</h3>
-            </div> -->
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Time</td>
+                            <td>Player</td>
+                            <td>Move</td>
+                            <td>At</td>
+                            <td>Target</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template v-for="move in this.game.Moves.reverse()">
+                            <tr>
+                                <td>{{ move.createdAt }}</td>
+                                <td>{{ move.actingGamePlayerId }}</td>
+                                <td>{{ move.action }}</td>
+                                <td>{{ move.targetPositionX }}, {{ move.targetPositionY }}</td>
+                                <td>{{ move.targetGamePlayerId }}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+             -->
         </div>
     </main>
 </template>
