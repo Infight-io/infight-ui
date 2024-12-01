@@ -8,6 +8,9 @@ import api from './plugins/InfightApi'
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"
 
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
+
 import './assets/main.css'
 
 const app = createApp(App)
@@ -19,6 +22,7 @@ app.config.globalProperties.$apiHostname = 'http://localhost:3000'
 app.config.globalProperties.$loginUrl = app.config.globalProperties.$apiHostname + '/auth/discord'
 
 app.use(api)
-app.use(Toast, {});
+app.use(Toast, {})
+app.use(FloatingVue)
 
 app.mount('#app')

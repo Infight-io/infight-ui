@@ -20,23 +20,48 @@ export default {
 </script>
 
 <template>
-    <div class="gamePiece" :style="{gridColumnStart: GamePlayer.positionX + 1, gridRowStart: GamePlayer.positionY+ 1}">
+    <VDropdown :distance="6" :triggers="['hover']"  class="gamePiece" :style="{gridColumnStart: GamePlayer.positionX + 1, gridRowStart: GamePlayer.positionY+ 1}">
         <div class="avatarBg" :style="{backgroundImage:'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)'}">
 
         </div>
-        <div class="apDot" v-if="GamePlayer.actions">{{ GamePlayer.actions }}</div>
-        <div class="heartContainer">
-            <template v-for="n in GamePlayer.health"> ❤️ </template>
-        </div>
-        <div class="deathContainer" v-if="GamePlayer.health == 0"> ☠️ </div>
+        
+        <template #popper v-GamePlayer="{GamePlayer}">
+            <div class="playerPopup">
+                <div style="text-align: center;">
+                    <strong>{{ GamePlayer.Player.name }}</strong>
+                </div>
+                <div class="playerStat">
+                    <div class="playerStat">❤️ {{ GamePlayer.health }} HP </div>
+                    <div class="playerStat">⚡ {{ GamePlayer.actions }} AP </div>
+                    <div class="playerStat">🎯 {{ GamePlayer.range }} Range</div>
+                </div>
+                
+<!--                 
+                <div class="apDot" v-if="GamePlayer.actions">{{ GamePlayer.actions }}</div>
+                <div class="heartContainer">
+                    <template v-for="n in GamePlayer.health"> ❤️ </template>
+                </div>
+                <div class="deathContainer" v-if="GamePlayer.health == 0"> ☠️ </div>
 
-        <div class="rangeContainer">
-            Range: {{GamePlayer.range}}
-        </div>
-    </div>
+                <div class="rangeContainer">
+                    Range: {{GamePlayer.range}}
+                </div> -->
+            </div>
+        </template>
+    </VDropdown>
+
 </template>
 
 <style scoped>
+.playerPopup {
+    padding:6px;
+    font-size: larger;
+}
+.playerStat {
+    font-size: small;
+    padding:6px;
+    display: inline;
+}
 .gamePiece {
     /* background-color: #212529; */
     aspect-ratio: 1;
@@ -69,7 +94,7 @@ export default {
     margin-left:80%;
     padding-top:0;
     box-shadow: 2px 2px solid black;
-    position: absolute;
+    /* position: absolute; */
     text-shadow: 0px 0px 4px black;
 }
 
