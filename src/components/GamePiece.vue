@@ -16,6 +16,13 @@ export default {
     methods: {
         currentGamePieceClass(isCurrent) {
             return isCurrent ? ' currentPlayerGamePiece' : ''
+        },
+        genStyleProps() {
+            if (this.GamePlayer.positionX == null) return {}
+            return {
+                gridColumnStart: this.GamePlayer.positionX + 1,
+                gridRowStart: this.GamePlayer.positionY + 1
+            }
         }
     },
     created() {
@@ -27,7 +34,7 @@ export default {
 
 <template>
     <VDropdown :distance="6" :triggers="['hover']" :class="'gamePiece ' + currentGamePieceClass(currentPlayerGamePiece)"
-        :style="{ gridColumnStart: GamePlayer.positionX + 1, gridRowStart: GamePlayer.positionY + 1 }">
+        :style="genStyleProps()">
         <div class="avatarBg"
             :style="{ backgroundImage: 'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)' }">
         </div>

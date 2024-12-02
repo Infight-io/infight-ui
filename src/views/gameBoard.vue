@@ -213,6 +213,14 @@ export default {
                 return null
             }
             return null
+        },
+        genGameboardStyle(){
+            if (this.game.status == 'new') {
+                return {backgroundColor:'rgba(0,0,0,0)', borderColor:'rgba(0,0,0,0)'};
+            } else {
+                return { gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }
+            }
+            
         }
     },
     components: {
@@ -231,12 +239,9 @@ export default {
                     <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
                         :name="game.Guild.name" />{{ game.Guild.name }}
                 </h3>
-                <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">This is the current Active Game</h5>
+                <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">This is the current active Game</h5>
                 <h6>Game is: {{ game.status }}, with {{ game.GamePlayers.length }} players</h6>
-                Next AP assigned in: ~{{ hoursUntilNextTick() }} hours
-                <div v-if="game.status == 'new'">
-                    <input type="button" value="Start Game" @click="startGame" />
-                </div>
+                <div v-if="game.status == 'active'">Next AP assigned in: ~{{ hoursUntilNextTick() }} hours</div>
 
 
                 <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
@@ -259,13 +264,13 @@ export default {
 
                 <div>
                     <h5>Dev Tools</h5>
+                    <input type="button" value="Start Game" @click="startGame" v-if="game.status == 'new'" />
                     <button @click="tickGame">Tick Game</button>
                     <button @click="deleteGame">Delete Game</button>
                 </div>
             </div>
 
-            <div class="gameBoard"
-                :style="{ gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }">
+            <div class="gameBoard" :style="genGameboardStyle()">
 
                 <template v-for="gp in game.GamePlayers">
                     <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.id" />
