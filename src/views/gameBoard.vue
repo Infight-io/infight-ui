@@ -172,9 +172,9 @@ export default {
                     console.log("Acted!", res)
                     if (this.queuedAction == 'shoot') {
                         this.$refs.explosion.style.display = 'inline'
-                        this.$refs.explosion.style.gridColumnStart = parseInt(targetX)+1
-                        this.$refs.explosion.style.gridRowStart = parseInt(targetY)+1
-                        setTimeout(()=>{
+                        this.$refs.explosion.style.gridColumnStart = parseInt(targetX) + 1
+                        this.$refs.explosion.style.gridRowStart = parseInt(targetY) + 1
+                        setTimeout(() => {
                             this.$refs.explosion.style.display = ''
                         }, 1000)
                     }
@@ -214,13 +214,13 @@ export default {
             }
             return null
         },
-        genGameboardStyle(){
+        genGameboardStyle() {
             if (this.game.status == 'new') {
-                return {backgroundColor:'rgba(0,0,0,0)', borderColor:'rgba(0,0,0,0)'};
+                return { backgroundColor: 'rgba(0,0,0,0)', borderColor: 'rgba(0,0,0,0)' };
             } else {
                 return { gridTemplateColumns: 'repeat(' + this.game.boardWidth + ', 1fr)', gridTemplateRows: 'repeat(' + this.game.boardHeight + ', 1fr)' }
             }
-            
+
         }
     },
     components: {
@@ -264,8 +264,8 @@ export default {
 
                 <div>
                     <h5>Dev Tools</h5>
-                    <input type="button" value="Start Game" @click="startGame" v-if="game.status == 'new'" />
-                    <button @click="tickGame">Tick Game</button>
+                    <button @click="startGame" v-if="game.status == 'new'">Start Game</button>
+                    <button @click="tickGame" v-if="game.status == 'active'">Tick Game</button>
                     <button @click="deleteGame">Delete Game</button>
                 </div>
             </div>
@@ -289,7 +289,7 @@ export default {
                 </template>
                 <div class="explosion" ref="explosion"></div>
             </div>
-<!-- 
+            <!-- 
             <div class="moveList">
                 <h3>Moves Made</h3>
                 <table>
@@ -356,11 +356,11 @@ export default {
 
 .explosion {
     background-image: url(/public/explosion.gif);
-    background-size:cover;
+    background-size: cover;
     width: 1fr;
     height: 1fr;
     z-index: 30;
-    display:none;
+    display: none;
 }
 
 .gameBoardCell {
