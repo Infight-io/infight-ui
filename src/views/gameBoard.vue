@@ -170,6 +170,14 @@ export default {
             this.$api.actInGame(this.game.GuildId, this.game.id, this.queuedAction, targetX, targetY)
                 .then(res => {
                     console.log("Acted!", res)
+                    if (this.queuedAction == 'shoot') {
+                        this.$refs.explosion.style.display = 'inline'
+                        this.$refs.explosion.style.gridColumnStart = parseInt(targetX)+1
+                        this.$refs.explosion.style.gridRowStart = parseInt(targetY)+1
+                        setTimeout(()=>{
+                            this.$refs.explosion.style.display = ''
+                        }, 1000)
+                    }
                     this.toast.success(res.data);
                     this.cancelMove()
                     this.refreshGame()
@@ -274,6 +282,7 @@ export default {
                         :style="{ gridColumnStart: target[0] + 1, gridRowStart: target[1] + 1 }"
                         @click="actionTargetClick" :data-x="target[0]" :data-y="target[1]"></div>
                 </template>
+                <div class="explosion" ref="explosion"></div>
             </div>
 <!-- 
             <div class="moveList">
@@ -318,6 +327,7 @@ export default {
 .gameBoard {
     margin-left: 300px;
     display: grid;
+    transition: 300ms;
     grid-column-gap: 2px;
     grid-row-gap: 2px;
     background-color: #40474f;
@@ -338,6 +348,15 @@ export default {
 }
 
 @media screen and (max-width: 400px) {}
+
+.explosion {
+    background-image: url(/public/explosion.gif);
+    background-size:cover;
+    width: 1fr;
+    height: 1fr;
+    z-index: 30;
+    display:none;
+}
 
 .gameBoardCell {
     /* box-shadow: inset 0 0 10px #4848488b; */

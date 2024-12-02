@@ -85,6 +85,7 @@ export default {
     aspect-ratio: 1;
     margin: 5px;
     z-index: 20;
+    transition: 300ms;
 }
 
 .avatarBg {
