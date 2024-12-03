@@ -188,13 +188,11 @@ export default {
 .heartContainer {
     text-align: center;
     font-size: small;
-    ;
     position: absolute;
     padding-top: 85%;
     width: 100%;
     text-shadow: 0px 0px 4px black;
 }
-
 
 .deathContainer {
     width: 100%;

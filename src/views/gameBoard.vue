@@ -408,11 +408,23 @@ export default {
 }
 
 .heartContainer {
+    animation: heartBounce 1s infinite alternate ease-in;
     z-index: 20;
     width: 1fr;
     height: 1fr;
     background-image: url(/public/pixelHeart.png);
+    background-repeat:no-repeat;
+    background-position-x:0;
     background-size: cover;
+}
+
+@keyframes heartBounce {
+  from {
+    background-position-y: -2px;
+  }
+  to {
+    background-position-y: 2px;
+  }
 }
 
 .highlight_move {
