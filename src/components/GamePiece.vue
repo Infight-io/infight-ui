@@ -2,7 +2,7 @@
 export default {
     props: {
         GamePlayer: Object,
-        currentPlayerGamePiece: Boolean
+        isCurrentPlayer: Boolean
     },
     computed: {
         hasIcon() {
@@ -15,7 +15,8 @@ export default {
     },
     methods: {
         currentGamePieceClass(isCurrent) {
-            return isCurrent ? ' currentPlayerGamePiece' : ''
+            console.log('isCurrentPiece', this.isCurrentPlayer)
+            return this.isCurrentPlayer ? ' currentPlayerGamePiece' : ''
         },
         genStyleProps() {
             if (this.GamePlayer.positionX == null) return {}
@@ -33,9 +34,9 @@ export default {
 </script>
 
 <template>
-    <VDropdown :distance="6" :triggers="['hover']" :class="'gamePiece ' + currentGamePieceClass(currentPlayerGamePiece)"
+    <VDropdown :distance="6" :triggers="['hover']" :class="'gamePiece'"
         :style="genStyleProps()">
-        <div class="avatarBg"
+        <div :class="'avatarBg' + currentGamePieceClass()"
             :style="{ backgroundImage: 'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)' }">
         </div>
         
@@ -67,7 +68,16 @@ export default {
 
 <style scoped>
 .currentPlayerGamePiece {
-    border: 2px solid red;
+    animation: currentPlayerGlow 1s infinite alternate ease-out;
+}
+
+@keyframes currentPlayerGlow {
+  from {
+    box-shadow: 0 0 0px 2px rgba(255, 255, 255, 0.3);
+  }
+  to {
+    box-shadow: 0 0 0px 4px rgba(255, 255, 255, 0.3);
+  }
 }
 
 .bigHearts {

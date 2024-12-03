@@ -36,6 +36,8 @@ export default {
                 .then(res => {
                     console.log('got game', res.data)
                     this.game = res.data
+                    const lip = this.getLoggedInGamePlayer()
+                    this.loggedInPlayerId = lip.PlayerId
                 })
                 .catch(err => {
                     console.log('game get error', err)
@@ -246,7 +248,7 @@ export default {
                     <div v-if="game.minimumPlayerCount > game.GamePlayers.length" style="color:orange;">
                         There aren't enough players opted into play yet! 
                     </div>
-                    <div v-if="game.startTime != null">
+                    <div v-if="game.startTime != null" style="color:lime;">
                         Game starts in: ~{{ hoursUntil(game.startTime) }} hour
                     </div>
                     <div>
@@ -294,7 +296,7 @@ export default {
             <div class="gameBoard" :style="genGameboardStyle()">
 
                 <template v-for="gp in game.GamePlayers">
-                    <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.id" />
+                    <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.PlayerId" />
                 </template>
 
                 <template v-for="x in game.boardWidth">
