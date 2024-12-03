@@ -190,9 +190,9 @@ export default {
         isCurrentUserPartOfThisGame() {
             return this.getLoggedInGamePlayer() != null
         },
-        hoursUntilNextTick() {
+        hoursUntil(targetTime) {
             const now = new Date()
-            const targetDate = new Date(this.game.nextTickTime)
+            const targetDate = new Date(targetTime)
 
             const timeDifference = targetDate.getTime() - now.getTime()
             const hoursDifference = timeDifference / (1000 * 60 * 60)
@@ -239,33 +239,43 @@ export default {
                     <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
                         :name="game.Guild.name" />{{ game.Guild.name }}
                 </h3>
-                <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">Current game</h5>
-                <h6>Game is: {{ game.status }}, with {{ game.GamePlayers.length }}/{{ game.minimumPlayerCount }} players</h6>
+                <h5 v-if="game.id != game.Guild.currentGameId" style="color:orange">Not current game</h5>
+                <h6>Game is <strong>{{ game.status }}</strong> with
+                    <strong>{{ game.GamePlayers.length }}</strong><span v-if="game.status == 'new'"><strong>/{{ game.minimumPlayerCount }}</strong></span> players</h6>
                 <div v-if="game.status == 'new'">
                     <div v-if="game.minimumPlayerCount > game.GamePlayers.length">
                         There aren't enough players opted into play yet! Tell a friend to <code>/infight-join</code> in
-                        <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">the #infight channel</a> on {{ game.Guild.name }}!
+                        <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">the #infight channel</a>!
+                    </div>
+                    <div v-if="game.startTime != null">
+                        Game starts in: ~{{ hoursUntil(game.startTime) }} hours
                     </div>
                 </div>
                 <div v-if="game.status == 'active'">
-                    Next AP assigned in: ~{{ hoursUntilNextTick() }} hours
+                    Next AP assigned in: ~{{ hoursUntil(game.nextTickTime) }} hours
                 </div>
-
 
                 <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
                     <div>You have <strong>{{ getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
+
                     <input type="button" value="🏃 Move (1 AP)" @click="setupMove"
                         :disabled="getLoggedInGamePlayer().actions < 1" />
+
                     <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot"
                         :disabled="getLoggedInGamePlayer().actions < 1">
+
                     <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP"
                         :disabled="getLoggedInGamePlayer().actions < 1">
+
                     <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP"
                         :disabled="getLoggedInGamePlayer().health < 2">
+
                     <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal"
                         :disabled="getLoggedInGamePlayer().actions < 3">
+
                     <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade"
                         :disabled="getLoggedInGamePlayer().actions < 3">
+
                     <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
                 </div>
 
