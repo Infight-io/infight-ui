@@ -47,10 +47,18 @@ export default {
         <div class="deathContainer" v-if="GamePlayer.health == 0"> ☠️ </div>
         <!-- <div>{{ GamePlayer.Player.name }}</div> -->
         <!-- <div class="apDot" v-if="GamePlayer.actions">{{ GamePlayer.actions }}</div> -->
-        <!-- <div class="heartContainer">
+
+        <!-- 
+        <div class="heartContainer">
             <template v-for="n in GamePlayer.health" v-if="GamePlayer.health <4"> ❤️ </template>
-<template v-if="GamePlayer.health >= 4"> <strong class="bigHearts">{{GamePlayer.health}} ❤️</strong></template>
-</div> -->
+            <template v-if="GamePlayer.health >= 4"> <strong class="bigHearts">{{GamePlayer.health}} ❤️</strong></template>
+        </div>
+         -->
+
+        <div class="statContainer" v-if="GamePlayer.health != 0">
+            <div class="statContainerWords">❤️ {{ GamePlayer.health }} <span class="rangeStat">&nbsp; 🎯 {{ GamePlayer.range }}</span></div>
+            
+        </div>
 
         <template #popper v-GamePlayer="{ GamePlayer }">
             <div class="playerPopup">
@@ -63,8 +71,6 @@ export default {
                     <div class="playerStat">⚡ {{ GamePlayer.actions }} AP </div>
                     <div class="playerStat">🎯 {{ GamePlayer.range }} Range</div>
                 </div>
-
-
             </div>
         </template>
     </VDropdown>
@@ -72,6 +78,60 @@ export default {
 </template>
 
 <style scoped>
+
+.gamePiece {
+    /* background-color: #212529; */
+    aspect-ratio: 1;
+    margin: 5px;
+    z-index: 20;
+    transition: 300ms;
+    cursor:pointer;
+    container-type: size;
+}
+
+.gamePiece:hover .statContainer {
+   display:none;
+}
+
+@container (max-width: 60px) {
+  .statContainer .statContainerWords {
+    font-size: 8px;
+    padding:2px 3px;
+  }
+}
+
+@container (max-width: 40px) {
+  .statContainer .rangeStat {
+    display:none
+  }
+}
+
+@container (max-width: 20px) {
+  .statContainer {
+    display:none
+  }
+}
+
+.statContainer {
+    text-align: center;
+    position:absolute;
+    bottom: -5px;
+    text-align: center;
+    width: 100%;
+}
+.statContainerWords {
+    color:black;
+    font-size: 10px;
+    padding:4px 6px;
+    display:inline;
+    box-shadow: 3px 2px 6px -3px rgba(0,0,0,0.75);
+    background-color: white;
+    border-radius: 4px;
+    font-weight: bold;
+    text-overflow: clip;
+    text-wrap: nowrap;
+}
+
 .currentPlayerGamePiece {
     animation: currentPlayerGlow 1s infinite alternate ease-out;
 }
@@ -102,14 +162,6 @@ export default {
     font-weight: bold;
 }
 
-.gamePiece {
-    /* background-color: #212529; */
-    aspect-ratio: 1;
-    margin: 5px;
-    z-index: 20;
-    transition: 300ms;
-    cursor:pointer;
-}
 
 .avatarBg {
     border-radius: 100%;
@@ -143,13 +195,33 @@ export default {
 
 .heartContainer {
     text-align: center;
-    font-size: normal;
+    font-size: small;
     ;
     position: absolute;
-    padding-top: 55%;
+    padding-top: 85%;
     width: 100%;
     text-shadow: 0px 0px 4px black;
 }
+
+@media screen and (max-width: 800px) {
+    .heartContainer {
+        padding-top: 55%;
+    }
+    .deathContainer {
+        padding-top: 10%;
+        font-size: 20pt;
+    }
+}
+@media screen and (max-width: 560px) {
+    .heartContainer {
+        display:none;
+    }
+    .deathContainer {
+        padding-top: 0%;
+        font-size: 5pt;
+    }
+}
+
 
 .deathContainer {
     text-align: center;
