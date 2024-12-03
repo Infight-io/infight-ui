@@ -2,6 +2,7 @@
 import { useSessionStore } from '../stores/SessionStore'
 import DiscordBtn from '../components/DiscordBtn.vue'
 import DiscordServerIcon from '../components/DiscordServerIcon.vue'
+import { RouterLink } from 'vue-router';
 
 export default {
   data() {
@@ -56,10 +57,10 @@ export default {
             <strong class="display-6">{{ team.name }}</strong>
             <div class="discordBtnContainer" v-if="team.isConnected">
               <div v-if="team.currentGameId">
-                <a :href="'/games/' + team.id + '/' + team.currentGameId">Go to game</a>
+                <RouterLink :to="'/games/' + team.id + '/' + team.currentGameId">Go to game</RouterLink>
               </div>
               <div v-if="!team.currentGameId">
-                <a :href="'/games/' + team.id + '/new'">Create game</a>
+                <RouterLink :to="'/games/' + team.id + '/new'">Create game</RouterLink>
               </div>
             </div>
             <div class="discordBtnContainer" v-if="!team.isConnected">

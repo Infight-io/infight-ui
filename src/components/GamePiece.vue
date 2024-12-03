@@ -38,7 +38,8 @@ export default {
         <div class="avatarBg"
             :style="{ backgroundImage: 'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)' }">
         </div>
-
+        
+        <div class="deathContainer" v-if="GamePlayer.health == 0"> ☠️ </div>
         <!-- <div>{{ GamePlayer.Player.name }}</div> -->
         <!-- <div class="apDot" v-if="GamePlayer.actions">{{ GamePlayer.actions }}</div> -->
         <!-- <div class="heartContainer">
@@ -56,7 +57,6 @@ export default {
                     <div class="playerStat">⚡ {{ GamePlayer.actions }} AP </div>
                     <div class="playerStat">🎯 {{ GamePlayer.range }} Range</div>
                 </div>
-                <div class="deathContainer" v-if="GamePlayer.health == 0"> ☠️ </div>
 
 
             </div>
@@ -137,7 +137,7 @@ export default {
 
 .deathContainer {
     text-align: center;
-    font-size: 60pt;
+    font-size: 35pt;
     position: absolute;
     padding-top: 15%;
     width: 100%;

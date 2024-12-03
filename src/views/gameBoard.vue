@@ -239,9 +239,17 @@ export default {
                     <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
                         :name="game.Guild.name" />{{ game.Guild.name }}
                 </h3>
-                <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">This is the current active Game</h5>
-                <h6>Game is: {{ game.status }}, with {{ game.GamePlayers.length }} players</h6>
-                <div v-if="game.status == 'active'">Next AP assigned in: ~{{ hoursUntilNextTick() }} hours</div>
+                <h5 v-if="game.id == game.Guild.currentGameId" style="color:green">Current game</h5>
+                <h6>Game is: {{ game.status }}, with {{ game.GamePlayers.length }}/{{ game.minimumPlayerCount }} players</h6>
+                <div v-if="game.status == 'new'">
+                    <div v-if="game.minimumPlayerCount > game.GamePlayers.length">
+                        There aren't enough players opted into play yet! Tell a friend to <code>/infight-join</code> in
+                        <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">the #infight channel</a> on {{ game.Guild.name }}!
+                    </div>
+                </div>
+                <div v-if="game.status == 'active'">
+                    Next AP assigned in: ~{{ hoursUntilNextTick() }} hours
+                </div>
 
 
                 <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
@@ -263,7 +271,7 @@ export default {
 
 
                 <div>
-                    <h5>Dev Tools</h5>
+                    <h5 style="padding-top:20px;">Dev Tools</h5>
                     <button @click="startGame" v-if="game.status == 'new'">Start Game</button>
                     <button @click="tickGame" v-if="game.status == 'active'">Tick Game</button>
                     <button @click="deleteGame">Delete Game</button>
