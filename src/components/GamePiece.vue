@@ -52,6 +52,7 @@ export default {
             <div class="playerPopup">
                 <div style="text-align: center;">
                     <strong>{{ GamePlayer.Player.name }}</strong>
+                    <strong v-if="this.isCurrentPlayer"> (you)</strong>
                 </div>
                 <div class="playerStat">
                     <div class="playerStat">❤️ {{ GamePlayer.health }} HP </div>
@@ -73,10 +74,10 @@ export default {
 
 @keyframes currentPlayerGlow {
   from {
-    box-shadow: 0 0 0px 2px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0px 0px rgba(255, 255, 255, 0.3);
   }
   to {
-    box-shadow: 0 0 0px 4px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0px 3px rgba(255, 255, 255, 0.3);
   }
 }
 
