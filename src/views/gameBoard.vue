@@ -296,7 +296,7 @@ export default {
             <div class="gameBoard" :style="genGameboardStyle()">
 
                 <template v-for="gp in game.GamePlayers">
-                    <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.PlayerId" />
+                    <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.PlayerId" :isWinner="gp.id == game.winningPlayerId" />
                 </template>
 
                 <template v-for="heartLocation in game.boardHeartLocations">

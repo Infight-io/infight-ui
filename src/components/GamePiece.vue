@@ -2,7 +2,8 @@
 export default {
     props: {
         GamePlayer: Object,
-        isCurrentPlayer: Boolean
+        isCurrentPlayer: Boolean,
+        isWinner: Boolean
     },
     computed: {
         hasIcon() {
@@ -32,7 +33,7 @@ export default {
     },
     created() {
         // props are exposed on `this`
-        console.log('Piece ', this.GamePlayer)
+        //console.log('Piece ', this.GamePlayer)
     }
 }
 </script>
@@ -44,6 +45,7 @@ export default {
             :style="{ backgroundImage: 'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)' }">
         </div>
         
+        <div class="winnerContainer" v-if="isWinner"></div>
         <div class="deathContainer" v-if="GamePlayer.health == 0"></div>
 
         <div class="statContainer" v-if="GamePlayer.health != 0">
@@ -57,6 +59,7 @@ export default {
                     <strong>{{ GamePlayer.Player.name }}</strong>
                     <strong v-if="this.isCurrentPlayer"> (you)</strong>
                     <strong v-if="GamePlayer.health == 0"> (dead)</strong>
+                    <strong v-if="isWinner"> (winner)</strong>
                 </div>
                 <div class="playerStat">
                     <div class="playerStat">❤️ {{ GamePlayer.health }} HP </div>
@@ -102,6 +105,14 @@ export default {
   .statContainer {
     display:none
   }
+}
+.winnerContainer {
+    width: 100%;
+    height: 100%;
+    background-image: url(/public/pixelCrown.png);
+    background-size: cover;
+    position: absolute;
+    top:-60%;
 }
 
 .statContainer {
