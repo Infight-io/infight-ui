@@ -299,6 +299,12 @@ export default {
                     <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.PlayerId" />
                 </template>
 
+                <template v-for="heartLocation in game.boardHeartLocations">
+                    <div class="heartContainer"
+                        :style="{ gridColumnStart: heartLocation[0] + 1, gridRowStart: heartLocation[1] + 1 }"
+                        v-tooltip="'Move here to gain a heart!'"></div>
+                </template>
+
                 <template v-for="x in game.boardWidth">
                     <template v-for="y in game.boardHeight">
                         <div class="gameBoardCell" :style="{ gridRowStart: x, gridColumnStart: y }"></div>
@@ -399,6 +405,14 @@ export default {
     width: 1fr;
     height: 1fr;
     cursor: pointer;
+}
+
+.heartContainer {
+    z-index: 20;
+    width: 1fr;
+    height: 1fr;
+    background-image: url(/public/pixelHeart.png);
+    background-size: cover;
 }
 
 .highlight_move {
