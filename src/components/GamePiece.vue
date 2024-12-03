@@ -49,7 +49,7 @@ export default {
         <div class="deathContainer" v-if="GamePlayer.health == 0"></div>
 
         <div class="statContainer" v-if="GamePlayer.health != 0">
-            <div class="statContainerWords">❤️ {{ GamePlayer.health }} <span class="rangeStat">&nbsp; 🎯 {{ GamePlayer.range }}</span></div>
+            <div class="statContainerWords">❤️ {{ GamePlayer.health }} <strong class="rangeStat">&nbsp; 🎯 {{ GamePlayer.range }}</strong></div>
             
         </div>
 
@@ -124,7 +124,7 @@ export default {
 }
 .statContainerWords {
     color:black;
-    font-size: 10px;
+    font-size: 12px;
     padding:4px 6px;
     display:inline;
     box-shadow: 3px 2px 6px -3px rgba(0,0,0,0.75);
