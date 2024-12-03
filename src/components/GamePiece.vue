@@ -44,16 +44,7 @@ export default {
             :style="{ backgroundImage: 'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)' }">
         </div>
         
-        <div class="deathContainer" v-if="GamePlayer.health == 0"> ☠️ </div>
-        <!-- <div>{{ GamePlayer.Player.name }}</div> -->
-        <!-- <div class="apDot" v-if="GamePlayer.actions">{{ GamePlayer.actions }}</div> -->
-
-        <!-- 
-        <div class="heartContainer">
-            <template v-for="n in GamePlayer.health" v-if="GamePlayer.health <4"> ❤️ </template>
-            <template v-if="GamePlayer.health >= 4"> <strong class="bigHearts">{{GamePlayer.health}} ❤️</strong></template>
-        </div>
-         -->
+        <div class="deathContainer" v-if="GamePlayer.health == 0"></div>
 
         <div class="statContainer" v-if="GamePlayer.health != 0">
             <div class="statContainerWords">❤️ {{ GamePlayer.health }} <span class="rangeStat">&nbsp; 🎯 {{ GamePlayer.range }}</span></div>
@@ -65,6 +56,7 @@ export default {
                 <div style="text-align: center;">
                     <strong>{{ GamePlayer.Player.name }}</strong>
                     <strong v-if="this.isCurrentPlayer"> (you)</strong>
+                    <strong v-if="GamePlayer.health == 0"> (dead)</strong>
                 </div>
                 <div class="playerStat">
                     <div class="playerStat">❤️ {{ GamePlayer.health }} HP </div>
@@ -141,7 +133,7 @@ export default {
     box-shadow: 0 0 0px 0px rgba(255, 255, 255, 0.3);
   }
   to {
-    box-shadow: 0 0 0px 3px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0px 5px rgba(255, 255, 255, 0.3);
   }
 }
 
@@ -203,33 +195,12 @@ export default {
     text-shadow: 0px 0px 4px black;
 }
 
-@media screen and (max-width: 800px) {
-    .heartContainer {
-        padding-top: 55%;
-    }
-    .deathContainer {
-        padding-top: 10%;
-        font-size: 20pt;
-    }
-}
-@media screen and (max-width: 560px) {
-    .heartContainer {
-        display:none;
-    }
-    .deathContainer {
-        padding-top: 0%;
-        font-size: 5pt;
-    }
-}
-
 
 .deathContainer {
-    text-align: center;
-    font-size: 35pt;
-    position: absolute;
-    padding-top: 15%;
     width: 100%;
-    text-shadow: 0px 0px 20px black;
+    height: 100%;
+    background-image: url(/public/pixelSkull.png);
+    background-size: cover;
 }
 
 
