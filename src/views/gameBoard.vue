@@ -243,12 +243,15 @@ export default {
                 <h6>Game is <strong>{{ game.status }}</strong> with
                     <strong>{{ game.GamePlayers.length }}</strong><span v-if="game.status == 'new'"><strong>/{{ game.minimumPlayerCount }}</strong></span> players</h6>
                 <div v-if="game.status == 'new'">
-                    <div v-if="game.minimumPlayerCount > game.GamePlayers.length">
-                        There aren't enough players opted into play yet! Tell a friend to <code>/infight-join</code> in
-                        <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">the #infight channel</a>!
+                    <div v-if="game.minimumPlayerCount > game.GamePlayers.length" style="color:orange;">
+                        There aren't enough players opted into play yet! 
                     </div>
                     <div v-if="game.startTime != null">
-                        Game starts in: ~{{ hoursUntil(game.startTime) }} hours
+                        Game starts in: ~{{ hoursUntil(game.startTime) }} hour
+                    </div>
+                    <div>
+                        Invite a friend to join with the Discord command <code>/infight-join</code> in
+                        <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">the #infight channel</a>!
                     </div>
                 </div>
                 <div v-if="game.status == 'active'">
