@@ -15,7 +15,7 @@ export default {
     },
     methods: {
         currentGamePieceClass(isCurrent) {
-            console.log('isCurrentPiece', this.isCurrentPlayer)
+            //console.log('isCurrentPiece', this.isCurrentPlayer)
             return this.isCurrentPlayer ? ' currentPlayerGamePiece' : ''
         },
         genStyleProps() {
@@ -24,6 +24,10 @@ export default {
                 gridColumnStart: this.GamePlayer.positionX + 1,
                 gridRowStart: this.GamePlayer.positionY + 1
             }
+        },
+        dmUser(userId) {
+            //console.log('dmUser', userId)
+            window.location.href = 'discord://discordapp.com/users/' + userId + '/'
         }
     },
     created() {
@@ -35,7 +39,7 @@ export default {
 
 <template>
     <VDropdown :distance="6" :triggers="['hover']" :class="'gamePiece'"
-        :style="genStyleProps()">
+        :style="genStyleProps()" @click="dmUser(GamePlayer.Player.id)">
         <div :class="'avatarBg' + currentGamePieceClass()"
             :style="{ backgroundImage: 'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)' }">
         </div>
@@ -104,6 +108,7 @@ export default {
     margin: 5px;
     z-index: 20;
     transition: 300ms;
+    cursor:pointer;
 }
 
 .avatarBg {
