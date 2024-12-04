@@ -8,6 +8,7 @@ import GamePiece from '../components/GamePiece.vue'
 export default {
     setup() {
         const toast = useToast()
+        console.log(import.meta.env)
         return { toast }
     },
     async created() {
@@ -26,7 +27,8 @@ export default {
             sessionStore: store,
             targetSquares: [],
             queuedAction: null,
-            loggedInPlayerId: null
+            loggedInPlayerId: null,
+            devMode: import.meta.env.DEV
         }
     },
     methods: {
@@ -261,7 +263,7 @@ export default {
                 </div>
 
                 <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
-                    <div>You have <strong>{{ getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
+                    <div>You have <strong style="color:white;text-decoration: underline">{{ getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
 
                     <input type="button" value="🏃 Move (1 AP)" @click="setupMove"
                         :disabled="getLoggedInGamePlayer().actions < 1" />
@@ -285,7 +287,7 @@ export default {
                 </div>
 
 
-                <div>
+                <div v-if="devMode">
                     <h5 style="padding-top:20px;">Dev Tools</h5>
                     <button @click="startGame" v-if="game.status == 'new'">Start Game</button>
                     <button @click="tickGame" v-if="game.status == 'active'">Tick Game</button>
@@ -384,7 +386,7 @@ export default {
 @media screen and (max-width: 400px) {}
 
 .explosion {
-    background-image: url(/public/explosion.gif);
+    background-image: url(/explosion.gif);
     background-size: cover;
     width: 1fr;
     height: 1fr;
@@ -412,7 +414,7 @@ export default {
     z-index: 20;
     width: 1fr;
     height: 1fr;
-    background-image: url(/public/pixelHeart.png);
+    background-image: url(/pixelHeart.png);
     background-repeat:no-repeat;
     background-position-x:0;
     background-size: cover;

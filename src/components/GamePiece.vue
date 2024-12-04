@@ -109,7 +109,7 @@ export default {
 .winnerContainer {
     width: 100%;
     height: 100%;
-    background-image: url(/public/pixelCrown.png);
+    background-image: url(/pixelCrown.png);
     background-size: cover;
     position: absolute;
     top:-60%;
@@ -208,7 +208,7 @@ export default {
 .deathContainer {
     width: 100%;
     height: 100%;
-    background-image: url(/public/pixelSkull.png);
+    background-image: url(/pixelSkull.png);
     background-size: cover;
 }
 
