@@ -1,5 +1,5 @@
 # scordwars-ui
-
+[![Node.js CI](https://github.com/ehippy/scordwars-ui/actions/workflows/node.js.yml/badge.svg)](https://github.com/ehippy/scordwars-ui/actions/workflows/node.js.yml)
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
