@@ -386,7 +386,7 @@ export default {
 @media screen and (max-width: 400px) {}
 
 .explosion {
-    background-image: url(/explosion.gif);
+    background-image: url(/img/explosion.gif);
     background-size: cover;
     width: 1fr;
     height: 1fr;
@@ -414,7 +414,7 @@ export default {
     z-index: 20;
     width: 1fr;
     height: 1fr;
-    background-image: url(/pixelHeart.png);
+    background-image: url(/img/pixelHeart.png);
     background-repeat:no-repeat;
     background-position-x:0;
     background-size: cover;
