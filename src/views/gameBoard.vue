@@ -245,17 +245,20 @@ export default {
                 </h3>
                 <h5 v-if="game.id != game.Guild.currentGameId" style="color:orange">Not current game</h5>
                 <h6>Game is <strong>{{ game.status }}</strong> with
-                    <strong>{{ game.GamePlayers.length }}</strong><span v-if="game.status == 'new'"><strong>/{{ game.minimumPlayerCount }}</strong></span> players</h6>
+                    <strong>{{ game.GamePlayers.length }}</strong><span v-if="game.status == 'new'"><strong>/{{
+                        game.minimumPlayerCount }}</strong></span> players
+                </h6>
                 <div v-if="game.status == 'new'">
                     <div v-if="game.minimumPlayerCount > game.GamePlayers.length" style="color:orange;">
-                        There aren't enough players opted into play yet! 
+                        There aren't enough players opted into play yet!
                     </div>
                     <div v-if="game.startTime != null" style="color:lime;">
                         Game starts in: ~{{ hoursUntil(game.startTime) }} hour
                     </div>
                     <div>
                         Invite a friend to join with the Discord command <code>/infight-join</code> in
-                        <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">the #infight channel</a>!
+                        <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">the
+                            #infight channel</a>!
                     </div>
                 </div>
                 <div v-if="game.status == 'active'">
@@ -263,27 +266,28 @@ export default {
                 </div>
 
                 <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
-                    <div>You have <strong style="color:white;text-decoration: underline">{{ getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
+                    <div>You have <strong style="color:white;text-decoration: underline">{{
+                        getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
 
-                    <input type="button" value="🏃 Move (1 AP)" @click="setupMove"
-                        :disabled="getLoggedInGamePlayer().actions < 1" />
+                    <button type="button" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1">🏃 Move (1
+                        AP)</button>
 
-                    <input type="button" value="💥 Shoot (1 AP)" @click="setupShoot"
-                        :disabled="getLoggedInGamePlayer().actions < 1">
+                    <button type="button" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1">💥 Shoot
+                        (1 AP)</button>
 
-                    <input type="button" value="🤝 Give AP (1 AP)" @click="setupGiveAP"
-                        :disabled="getLoggedInGamePlayer().actions < 1">
+                    <button type="button" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1">🤝 Give
+                        AP (1 AP)</button>
 
-                    <input type="button" value="💌 Give HP (1 HP)" @click="setupGiveHP"
-                        :disabled="getLoggedInGamePlayer().health < 2">
+                    <button type="button" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2">💌 Give HP
+                        (1 HP)</button>
 
-                    <input type="button" value="❤️ Heal (3 AP)" @click="setupHeal"
-                        :disabled="getLoggedInGamePlayer().actions < 3">
+                    <button type="button" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3">❤️ Heal (3
+                        AP)</button>
 
-                    <input type="button" value="🔧 Upgrade (3 AP)" @click="setupUpgrade"
-                        :disabled="getLoggedInGamePlayer().actions < 3">
+                    <button type="button" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3">🔧
+                        Upgrade (3 AP)</button>
 
-                    <input type="button" value="❌ Cancel" @click="cancelMove" v-if="queuedAction != null" />
+                    <button type="button" @click="cancelMove" v-if="queuedAction != null">❌ Cancel</button>
                 </div>
 
 
@@ -298,7 +302,8 @@ export default {
             <div class="gameBoard" :style="genGameboardStyle()">
 
                 <template v-for="gp in game.GamePlayers">
-                    <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.PlayerId" :isWinner="gp.id == game.winningPlayerId" />
+                    <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.PlayerId"
+                        :isWinner="gp.id == game.winningPlayerId" />
                 </template>
 
                 <template v-for="heartLocation in game.boardHeartLocations">
@@ -415,18 +420,19 @@ export default {
     width: 1fr;
     height: 1fr;
     background-image: url(/img/pixelHeart.png);
-    background-repeat:no-repeat;
-    background-position-x:0;
+    background-repeat: no-repeat;
+    background-position-x: 0;
     background-size: cover;
 }
 
 @keyframes heartBounce {
-  from {
-    background-position-y: -2px;
-  }
-  to {
-    background-position-y: 2px;
-  }
+    from {
+        background-position-y: -2px;
+    }
+
+    to {
+        background-position-y: 2px;
+    }
 }
 
 .highlight_move {
@@ -461,10 +467,4 @@ export default {
     background-color: rgba(238, 0, 255, 0.6);
 }
 
-.actionPanel {
-
-    input {
-        margin: 5px;
-    }
-}
 </style>

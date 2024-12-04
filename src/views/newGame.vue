@@ -9,7 +9,7 @@ export default {
     },
     data() {
         return {
-            cycle: 24,
+            cycle: 60,
             size: 10,
             teamId: this.$route.params.teamId
         }
@@ -104,9 +104,5 @@ export default {
     border: 1px solid gray;
     font-size: x-large;
 
-    input[type='radio'] {
-        transform: scale(3);
-        margin-right: 15px;
-    }
 }
 </style>
