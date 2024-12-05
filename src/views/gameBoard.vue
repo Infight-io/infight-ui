@@ -19,7 +19,7 @@ export default {
             this.refreshGame()
         })
         window.addEventListener("resize", this.windowResize);
-        windowResize()
+        this.windowResize()
     },
     data() {
         const store = useSessionStore()
@@ -323,10 +323,10 @@ export default {
                                     Game starts in: ~{{ hours?hours+':':'' }}{{ minutes?String(minutes).padStart(2, '0')+':':'' }}{{ String(seconds).padStart(2, '0') }}
                                 </vue-countdown>
                             </div>
+                        </div>
 
-                            <div class="alert alert-warning" v-if="game.minimumPlayerCount > game.GamePlayers.length">
-                                There aren't enough players opted into play yet! Invite a friend, or join yourself!
-                            </div>
+                        <div class="alert alert-warning" v-if="game.minimumPlayerCount > game.GamePlayers.length">
+                            The game cannot start. There aren't enough players ({{ game.minimumPlayerCount }}) opted into play yet! Invite a friend, or join yourself!
                         </div>
                     </div>
                     <div class="gameBoard" :style="genGameboardStyle()">
