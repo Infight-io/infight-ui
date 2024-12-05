@@ -44,34 +44,51 @@ export default {
 <template>
   <main>
     <div class="container">
-      <h1 class="mt-5">My Games</h1>
-      <p class="lead">Every Discord server can have one game.</p>
 
-      <div v-if="!sessionStore.isLoggedIn">
-        <h2>Log in to see your teams</h2>
-      </div>
-      <div v-else>
-        <div class="serverContainer">
-          <div v-for="team in teams" class="serverItem">
-            <DiscordServerIcon :serverId="team.id" :icon="team.icon" :name="team.name" />
-            <strong class="display-6">{{ team.name }}</strong>
-            <div class="discordBtnContainer" v-if="team.isConnected">
-              <div v-if="team.currentGameId">
-                <RouterLink :to="'/games/' + team.id + '/' + team.currentGameId">Go to game</RouterLink>
-              </div>
-              <div v-if="!team.currentGameId">
-                <RouterLink :to="'/games/' + team.id + '/new'">Create game</RouterLink>
-              </div>
+      <div class="row">
+
+        <div class="col-sm-5">
+          <h1 class="mt-5">Betray your Discord Pals!</h1>
+          <p class="lead"></p>
+          <p>Infight.io is a board game you play alongside your favorite discord servers.
+            To win an infight, you need to team up with other players, share resources and
+            edge out you friends.
+          </p>
+
+          <p>Check out the rules and invite your friends!</p>
+        </div>
+        <div class="col-sm-7">
+          <h2 class="mt-5">My Games</h2>
+          <p class="lead">Each Discord can have one game at a time. Be there or be square!</p>
+
+          <div v-if="!sessionStore.isLoggedIn">
+            <div class="alert alert-primary" role="alert">
+              You need to log in with Discord above to see your servers.
             </div>
-            <div class="discordBtnContainer" v-if="!team.isConnected">
-              <DiscordBtn
-                url="https://discord.com/api/oauth2/authorize?client_id=1068711122556948490&permissions=275951650832&scope=bot%20applications.commands"
-                target="_blank">Add to Discord</DiscordBtn><!-- TODO: bind that client_id to a config setting -->
+          </div>
+          <div v-else>
+            <div class="serverContainer">
+              <div v-for="team in teams" class="serverItem">
+                <DiscordServerIcon :serverId="team.id" :icon="team.icon" :name="team.name" />
+                <strong class="display-6">{{ team.name }}</strong>
+                <div class="discordBtnContainer" v-if="team.isConnected">
+                  <div v-if="team.currentGameId">
+                    <RouterLink :to="'/games/' + team.id + '/' + team.currentGameId">Go to game</RouterLink>
+                  </div>
+                  <div v-if="!team.currentGameId">
+                    <RouterLink :to="'/games/' + team.id + '/new'">Create game</RouterLink>
+                  </div>
+                </div>
+                <div class="discordBtnContainer" v-if="!team.isConnected">
+                  <DiscordBtn
+                    url="https://discord.com/api/oauth2/authorize?client_id=1068711122556948490&permissions=275951650832&scope=bot%20applications.commands"
+                    target="_blank">Add to Discord</DiscordBtn><!-- TODO: bind that client_id to a config setting -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </main>
 </template>

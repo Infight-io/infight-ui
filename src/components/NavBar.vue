@@ -35,16 +35,13 @@ export default {
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li>
-            <RouterLink class="nav-link px-2 text-secondary" to="/">Home</RouterLink>
-          </li>
-          <li>
-            <RouterLink class="nav-link px-2 text-secondary" to="/games">My Games</RouterLink>
+            <RouterLink class="nav-link px-2 text-secondary" to="/">My Games</RouterLink>
           </li>
           <!-- <li>
             <RouterLink class="nav-link px-2 text-secondary" to="/leaderboards">Leaderboards</RouterLink>
           </li> -->
           <li>
-            <RouterLink class="nav-link px-2 text-secondary" to="/FAQ">FAQ</RouterLink>
+            <RouterLink class="nav-link px-2 text-secondary" to="/FAQ">Rules &amp; FAQ</RouterLink>
           </li>
         </ul>
 
