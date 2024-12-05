@@ -63,7 +63,7 @@ import { h } from 'vue';
 
                     <img src="/img/explosion.gif" class="float-end" alt="big bada boom" style="width:120px;">
                     <h4>How do I get started?</h4>
-                    <p>You need to add Infight to your favorite Discord server from the <a href="/">Games</a> page.
+                    <p>You need to add Infight to your favorite Discord server from the <RouterLink to="/">Games</RouterLink> page.
                         You'll need to be an adminstrator to do this. Once added, there'll be a new
                         <code>#infight</code>
                         channel on your server. Head in there and use the command <code>/infight-join</code> to be part

@@ -9,7 +9,8 @@ export default {
     const store = useSessionStore()
     return {
       teams: [],
-      sessionStore: store
+      sessionStore: store,
+      devMode: import.meta.env.DEV,
     }
   },
   components: {
@@ -62,7 +63,9 @@ export default {
                 <strong class="display-6">{{ team.name }}</strong>
                 <div class="discordBtnContainer" v-if="team.isConnected">
                   <div v-if="team.currentGameId">
-                    <RouterLink :to="'/games/' + team.id + '/' + team.currentGameId">Go to game</RouterLink>
+                    <RouterLink :to="'/games/' + team.id + '/' + team.currentGameId">
+                      <button class="btn btn-primary">Play Now</button>
+                    </RouterLink>
                   </div>
                   <div v-if="!team.currentGameId">
                     <RouterLink :to="'/games/' + team.id + '/new'">Create game</RouterLink>
@@ -86,7 +89,7 @@ export default {
             edge out you friends.
           </p>
 
-          <p>Check out the rules and invite your friends!</p>
+          <p><RouterLink to="/FAQ">Check out the rules</RouterLink> and invite your friends!</p>
 
           <img src="/img/homepageSplash.png" class="img-fluid" alt="an Infight game board">
         </div>
