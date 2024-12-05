@@ -11,6 +11,8 @@ import "vue-toastification/dist/index.css"
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css'
 
+import VueCountdown from '@chenfengyuan/vue-countdown';
+
 import './assets/main.css'
 
 const app = createApp(App)
@@ -24,5 +26,6 @@ app.config.globalProperties.$loginUrl = app.config.globalProperties.$apiHostname
 app.use(api)
 app.use(Toast, {})
 app.use(FloatingVue)
+app.component(VueCountdown.name, VueCountdown);
 
 app.mount('#app')
