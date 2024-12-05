@@ -35,7 +35,7 @@ export default {
     },
     methods: {
         windowResize(){
-            if(window.innerWidth > 900) {
+            if(window.innerWidth > 575) {
                 this.actnBtnClass = 'btn-group-vertical'
             } else {
                 this.actnBtnClass = 'btn-group'
@@ -243,143 +243,147 @@ export default {
 <template>
     <main>
         <div class="container">
+            <div class="row">
 
-            <div class="gameBar">
-                <h3 class="mt-5">
-                    <RouterLink :to="`/guild/${ game.GuildId }`">
-                        <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
-                        :name="game.Guild.name" />{{ game.Guild.name }}
-                    </RouterLink>
+                <div class="col-sm-3">
                     
-                </h3>
-                <div v-if="game.id != game.Guild.currentGameId">
-                    <div class="alert alert-success" role="alert">
-                        This game is over, thanks for playing. gg
+
+                    <div class="gameBar">
+                        <p>
+                            <RouterLink :to="`/guild/${ game.GuildId }`">
+                                <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
+                                :name="game.Guild.name" />
+                            </RouterLink>
+                        </p>
+                        <div v-if="game.id != game.Guild.currentGameId">
+                            <div class="alert alert-success" role="alert">
+                                This game is over, thanks for playing. gg
+                            </div>
+                        </div>
+
+                        <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
+
+                            <div ref="actionButtonDiv" :class="actnBtnClass" role="group" aria-label="Vertical button group">
+
+                                <button :class="'btn btn-success ' + (getLoggedInGamePlayer().actions > 0 ? 'btn-success' : 'btn-warning')"
+                                    style="cursor: default;"
+                                    v-tooltip="'You currently have ' + getLoggedInGamePlayer().actions + ' AP to spend on things like movement and healing!'">
+                                    <strong><span class="actionBtnDetail">You have </span>{{ getLoggedInGamePlayer().actions }} AP</strong><br />
+                                    <span v-if="game.status == 'active'" class="apCountdown">
+                                        <vue-countdown :time="(new Date(game.nextTickTime)).getTime() - (new Date).getTime()" v-slot="{ days, hours, minutes, seconds }">
+                                            <span class="actionBtnDetail">Next AP in </span>~{{ hours?hours+':':'' }}{{ minutes?String(minutes).padStart(2, '0')+' min ':'' }}
+                                        </vue-countdown>
+                                    </span>
+                                </button>
+                                
+                                <button type="button" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
+                                    🏃 <span class="actionBtnDetail">Move (1 AP)</span>
+                                </button>
+
+                                <button type="button" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
+                                    💥 <span class="actionBtnDetail">Shoot (1 AP)</span>
+                                </button>
+
+                                <button type="button" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
+                                    🤝 <span class="actionBtnDetail">Give AP (1 AP)</span>
+                                </button>
+
+                                <button type="button" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2" class="btn btn-secondary">
+                                    💌 <span class="actionBtnDetail">Give HP (1 HP)</span>
+                                </button>
+
+                                <button type="button" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary">
+                                    ❤️ <span class="actionBtnDetail">Heal (3 AP)</span>
+                                </button>
+
+                                <button type="button" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary">
+                                    🔧 <span class="actionBtnDetail">Upgrade (3 AP)</span>
+                                </button>
+
+                                <button type="button" @click="cancelMove" v-if="queuedAction != null" class="btn btn-danger" aria-label="Close">
+                                    🔙 <span class="actionBtnDetail">Cancel</span>
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-
-                <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
-
-                    <div ref="actionButtonDiv" :class="actnBtnClass" role="group" aria-label="Vertical button group">
-
-                        <button :class="'btn btn-success ' + (getLoggedInGamePlayer().actions > 0 ? 'btn-success' : 'btn-warning')"
-                            style="cursor: default;"
-                            v-tooltip="'You currently have ' + getLoggedInGamePlayer().actions + ' AP to spend on things like movement and healing!'">
-                            <strong>You have {{ getLoggedInGamePlayer().actions }} AP</strong><br />
-                            <span v-if="game.status == 'active'" class="apCountdown">
-                                <vue-countdown :time="(new Date(game.nextTickTime)).getTime() - (new Date).getTime()" v-slot="{ days, hours, minutes, seconds }">
-                                    Next AP in ~{{ hours?hours+':':'' }}{{ minutes?String(minutes).padStart(2, '0')+' min ':'' }}
+                <div class="col-sm-9">
+                    
+                    <div class="rosterHeader" v-if="game.status == 'new'">
+                        <h1>Player Roster</h1>
+                        <p>These fine folks are opted into the game. You can join with the Discord slash command <code>/infight-join</code> in the game's
+                            <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">
+                            #infight channel</a>! Hurry, if you miss this game, you'll have to wait for the next one. Invite a 
+                            friend while you're at it!
+                        </p>
+                        <div v-if="game.startTime != null">
+                            <div class="alert alert-success" role="alert">
+                                <vue-countdown :time="(new Date(game.startTime)).getTime() - (new Date).getTime()" v-slot="{ days, hours, minutes, seconds }">
+                                    Game starts in: ~{{ hours?hours+':':'' }}{{ minutes?String(minutes).padStart(2, '0')+':':'' }}{{ String(seconds).padStart(2, '0') }}
                                 </vue-countdown>
-                            </span>
-                        </button>
-                        
-                        <button type="button" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
-                            🏃 <span class="actionBtnDetail">Move (1 AP)</span>
-                        </button>
+                            </div>
 
-                        <button type="button" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
-                            💥 <span class="actionBtnDetail">Shoot (1 AP)</span>
-                        </button>
+                            <div class="alert alert-warning" v-if="game.minimumPlayerCount > game.GamePlayers.length">
+                                There aren't enough players opted into play yet! Invite a friend, or join yourself!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gameBoard" :style="genGameboardStyle()">
 
-                        <button type="button" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
-                            🤝 <span class="actionBtnDetail">Give AP (1 AP)</span>
-                        </button>
+                        <template v-for="gp in game.GamePlayers">
+                            <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.PlayerId"
+                                :isWinner="gp.id == game.winningPlayerId" />
+                        </template>
 
-                        <button type="button" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2" class="btn btn-secondary">
-                            💌 <span class="actionBtnDetail">Give HP (1 HP)</span>
-                        </button>
+                        <template v-for="heartLocation in game.boardHeartLocations">
+                            <div class="heartContainer"
+                                :style="{ gridColumnStart: heartLocation[0] + 1, gridRowStart: heartLocation[1] + 1 }"
+                                v-tooltip="'Move here to gain a heart!'"></div>
+                        </template>
 
-                        <button type="button" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary">
-                            ❤️ <span class="actionBtnDetail">Heal (3 AP)</span>
-                        </button>
+                        <template v-for="x in game.boardWidth">
+                            <template v-for="y in game.boardHeight">
+                                <div class="gameBoardCell" :style="{ gridRowStart: x, gridColumnStart: y }"></div>
+                            </template>
+                        </template>
 
-                        <button type="button" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary">
-                            🔧 <span class="actionBtnDetail">Upgrade (3 AP)</span>
-                        </button>
-
-                        <button type="button" @click="cancelMove" v-if="queuedAction != null" class="btn btn-danger" aria-label="Close">
-                            🔙 <span class="actionBtnDetail">Cancel</span>
-                        </button>
-
-                        <!-- DEV STUFF -->
-                        <button @click="startGame" class="btn btn-success" v-if="devMode && game.status == 'new'">
-                            🏎️ <span class="actionBtnDetail">Start Game</span>
-                        </button>
-                        <button @click="tickGame" class="btn btn-primary" v-if="devMode && game.status == 'active'">
-                            ⏰ <span class="actionBtnDetail">Tick Game</span>
-                        </button>
-                        <button @click="deleteGame" class="btn btn-danger" v-if="devMode">
-                            💀 <span class="actionBtnDetail">Delete Game</span>
-                        </button>
+                        <template v-for="target in targetSquares">
+                            <div :class="'highlightCell highlight_' + queuedAction"
+                                :style="{ gridColumnStart: target[0] + 1, gridRowStart: target[1] + 1 }"
+                                @click="actionTargetClick" :data-x="target[0]" :data-y="target[1]"></div>
+                        </template>
+                        <div class="explosion" ref="explosion"></div>
                     </div>
 
                 </div>
-            </div>
-            <div class="rosterHeader" v-if="game.status == 'new'">
-                <div v-if="game.startTime != null">
-                    <div class="alert alert-success" role="alert">
-                        <vue-countdown :time="(new Date(game.startTime)).getTime() - (new Date).getTime()" v-slot="{ days, hours, minutes, seconds }">
-                            Game starts in: ~{{ hours?hours+':':'' }}{{ minutes?String(minutes).padStart(2, '0')+':':'' }}{{ String(seconds).padStart(2, '0') }}
-                        </vue-countdown>
-                    </div>
 
-                    <div class="alert alert-warning" v-if="game.minimumPlayerCount > game.GamePlayers.length">
-                        There aren't enough players opted into play yet! Invite a friend, or join yourself!
-                    </div>
+                <div>
+                    <button @click="startGame" class="btn btn-success" v-if="devMode && game.status == 'new'">
+                        🏎️ <span class="actionBtnDetail">Start Game</span>
+                    </button>
+                    <button @click="tickGame" class="btn btn-primary" v-if="devMode && game.status == 'active'">
+                        ⏰ <span class="actionBtnDetail">Tick Game</span>
+                    </button>
+                    <button @click="deleteGame" class="btn btn-danger" v-if="devMode">
+                        💀 <span class="actionBtnDetail">Delete Game</span>
+                    </button>
                 </div>
-                <h1>Player Roster</h1>
-                <p>These fine folks are opted into the game. You can join with the Discord slash command <code>/infight-join</code> in the game's
-                    <a :href="'discord://discord.com/channels/' + game.Guild.id + '/' + game.Guild.gameChannelId">
-                    #infight channel</a>! Hurry, if you miss this game, you'll have to wait for the next one. Invite a 
-                    friend while you're at it!
-                </p>
             </div>
-            <div class="gameBoard" :style="genGameboardStyle()">
-
-                <template v-for="gp in game.GamePlayers">
-                    <GamePiece :GamePlayer="gp" :isCurrentPlayer="loggedInPlayerId == gp.PlayerId"
-                        :isWinner="gp.id == game.winningPlayerId" />
-                </template>
-
-                <template v-for="heartLocation in game.boardHeartLocations">
-                    <div class="heartContainer"
-                        :style="{ gridColumnStart: heartLocation[0] + 1, gridRowStart: heartLocation[1] + 1 }"
-                        v-tooltip="'Move here to gain a heart!'"></div>
-                </template>
-
-                <template v-for="x in game.boardWidth">
-                    <template v-for="y in game.boardHeight">
-                        <div class="gameBoardCell" :style="{ gridRowStart: x, gridColumnStart: y }"></div>
-                    </template>
-                </template>
-
-                <template v-for="target in targetSquares">
-                    <div :class="'highlightCell highlight_' + queuedAction"
-                        :style="{ gridColumnStart: target[0] + 1, gridRowStart: target[1] + 1 }"
-                        @click="actionTargetClick" :data-x="target[0]" :data-y="target[1]"></div>
-                </template>
-                <div class="explosion" ref="explosion"></div>
-            </div>
-
         </div>
     </main>
 </template>
 
 <style scoped>
 .gameBar {
-    width: 300px;
-    /* background-color: #2b2b2b; */
-    position: fixed;
-    overflow: auto;
+    text-align: center;
 }
 
 .rosterHeader {
-    margin-left: 300px;
-    padding-top:40px;
+    padding-top:20px;
 }
 
 .gameBoard {
-    margin-left: 300px;
     display: grid;
     transition: 300ms;
     grid-column-gap: 2px;
@@ -388,6 +392,7 @@ export default {
     border: 2px solid #40474f;
     max-width: 1000px;
     /* grid-auto-rows: 1fr; */
+    margin-top:4px;
 }
 
 
