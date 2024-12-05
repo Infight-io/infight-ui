@@ -1,5 +1,5 @@
 # infight-ui
-[![Node.js CI](https://github.com/ehippy/scordwars-ui/actions/workflows/node.js.yml/badge.svg)](https://github.com/ehippy/scordwars-ui/actions/workflows/node.js.yml)
+[![Node.js CI](https://github.com/Infight-io/infight-ui/actions/workflows/node.js.yml/badge.svg)](https://github.com/Infight-io/infight-ui/actions/workflows/node.js.yml)
 
 This is the Vue frontend for [infight.io](https://infight.io)
 
