@@ -46,17 +46,6 @@ export default {
     <div class="container">
 
       <div class="row">
-
-        <div class="col-sm-5">
-          <h1 class="mt-5">Betray your Discord Pals!</h1>
-          <p class="lead"></p>
-          <p>Infight.io is a board game you play alongside your favorite discord servers.
-            To win an infight, you need to team up with other players, share resources and
-            edge out you friends.
-          </p>
-
-          <p>Check out the rules and invite your friends!</p>
-        </div>
         <div class="col-sm-7">
           <h2 class="mt-5">My Games</h2>
           <p class="lead">Each Discord can have one game at a time. Be there or be square!</p>
@@ -87,6 +76,19 @@ export default {
               </div>
             </div>
           </div>
+        </div>
+
+        <div class="col-sm-5">
+          <h1 class="mt-5">Betray your Discord Pals!</h1>
+          <p class="lead"></p>
+          <p>Infight.io is a board game you play alongside your favorite discord servers.
+            To win an infight, you need to team up with other players, share resources and
+            edge out you friends.
+          </p>
+
+          <p>Check out the rules and invite your friends!</p>
+
+          <img src="/img/homepageSplash.png" class="img-fluid" alt="an Infight game board">
         </div>
       </div>
     </div>

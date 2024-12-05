@@ -7,7 +7,7 @@ import { h } from 'vue';
     <main>
         <div class="container">
             <div class="row">
-                <div class="offset-1 col-sm-4">
+                <div class="offset-lg-1 col-lg-4">
 
                     <h2 class="mt-5">Infight Rules</h2>
 
@@ -52,7 +52,7 @@ import { h } from 'vue';
                     <p>You can't win this game without making some friends and stabbing some backs. Probably.</p>
 
                 </div>
-                <div class="offset-1 col-sm-5">
+                <div class="offset-lg-1 col-lg-6">
                     <h2 class="mt-5">FAQs</h2>
                     <h4>What's infight?</h4>
                     <p>Infight is a cooperative/combative tactics game played alongside Discord. You team up with your
@@ -74,14 +74,23 @@ import { h } from 'vue';
                     A <strong>Discord server admin</strong> needs to add infight. Ask your administrator very nicely.
                     </div>
 
-                    <h4>How many players do I need?</h4>
-                    <p>The more the merrier! Infight is a game of coordination and intrigue. Games really start getting
-                        good at a dozen or more players and can be played with many dozens of players.
+<h4>How many players do I need?</h4>
+<p>The more the merrier! Infight is a game of coordination and intrigue. Games really start getting
+    good at a dozen or more players and can be played with many dozens of players.
+</p>
+
+
+<h4>You mean I can't move again for <em>a whole day?</em></h4>
+                    <p>Action points do come slowly. The trick is, the timer's not the only thing with action points.
+                        Talk to the other players on discord and coordinate how you can use your points together to 
+                        achieve big things quickly! Remember, you can share AP and HP with others. 
                     </p>
 
 
                     <h4>Is this Tank Turn Tactics?</h4>
-                    <p>Good eye! Infight's gameplay is very much inspired by 
+                    <p>Good eye! Infight's gameplay is very much inspired by <a href="https://lukemuscat.com/" target="_blank">Luke Muskat's</a>
+                        banned <a href="https://www.youtube.com/watch?v=t9WMNuyjm4w" target="_blank">pen and paper tabletop game.</a> Infight is
+                        built from scratch to make this game concept real on the internet!
                     </p>
                 </div>
             </div>
