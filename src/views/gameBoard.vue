@@ -74,9 +74,6 @@ export default {
                 })
         },
         startGame(event) {
-            if (!confirm('Really Begin Game? player list will be locked.')) {
-                return
-            }
             const router = this.$router
             //alert(`teamid ${this.teamId}!`)
             this.$api.startGame(this.game.GuildId, this.game.id)
@@ -261,41 +258,39 @@ export default {
                             #infight channel</a>!
                     </div>
                 </div>
-                <div v-if="game.status == 'active'">
-                    Next AP assigned in: ~{{ hoursUntil(game.nextTickTime) }} hours
-                </div>
 
                 <div class="actionPanel" v-if="isCurrentUserPartOfThisGame() && game.status == 'active'">
-                    <div>You have <strong style="color:white;text-decoration: underline">{{
-                        getLoggedInGamePlayer().actions }} Action Points (AP)</strong></div>
 
-                    <button type="button" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1">🏃 Move (1
-                        AP)</button>
+                    <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
 
-                    <button type="button" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1">💥 Shoot
-                        (1 AP)</button>
+                        <button :class="'btn btn-success ' + (getLoggedInGamePlayer().actions > 0 ? 'btn-success' : 'btn-warning')"
+                            style="cursor: default;"
+                            v-tooltip="'You currently have ' + getLoggedInGamePlayer().actions + ' AP to spend on things like movement and healing!'">
+                            <strong>You have {{ getLoggedInGamePlayer().actions }} AP</strong><br />
+                            <span v-if="game.status == 'active'" class="apCountdown">Next AP in: ~{{ hoursUntil(game.nextTickTime) }} hours</span>
+                        </button>
+                        
+                        <button type="button" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">🏃 Move (1
+                            AP)</button>
 
-                    <button type="button" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1">🤝 Give
-                        AP (1 AP)</button>
+                        <button type="button" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">💥 Shoot
+                            (1 AP)</button>
 
-                    <button type="button" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2">💌 Give HP
-                        (1 HP)</button>
+                        <button type="button" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">🤝 Give
+                            AP (1 AP)</button>
 
-                    <button type="button" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3">❤️ Heal (3
-                        AP)</button>
+                        <button type="button" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2" class="btn btn-secondary">💌 Give HP
+                            (1 HP)</button>
 
-                    <button type="button" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3">🔧
-                        Upgrade (3 AP)</button>
+                        <button type="button" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary">❤️ Heal (3
+                            AP)</button>
 
-                    <button type="button" @click="cancelMove" v-if="queuedAction != null">❌ Cancel</button>
-                </div>
+                        <button type="button" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary">🔧
+                            Upgrade (3 AP)</button>
 
+                        <button type="button" @click="cancelMove" v-if="queuedAction != null" class="btn btn-danger" aria-label="Close">Cancel</button>
+                    </div>
 
-                <div v-if="devMode">
-                    <h5 style="padding-top:20px;">Dev Tools</h5>
-                    <button @click="startGame" v-if="game.status == 'new'">Start Game</button>
-                    <button @click="tickGame" v-if="game.status == 'active'">Tick Game</button>
-                    <button @click="deleteGame">Delete Game</button>
                 </div>
             </div>
 
@@ -325,33 +320,19 @@ export default {
                 </template>
                 <div class="explosion" ref="explosion"></div>
             </div>
-            <!-- 
-            <div class="moveList">
-                <h3>Moves Made</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <td>Time</td>
-                            <td>Player</td>
-                            <td>Move</td>
-                            <td>At</td>
-                            <td>Target</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template v-for="move in this.game.Moves.reverse()">
-                            <tr>
-                                <td>{{ move.createdAt }}</td>
-                                <td>{{ move.actingGamePlayerId }}</td>
-                                <td>{{ move.action }}</td>
-                                <td>{{ move.targetPositionX }}, {{ move.targetPositionY }}</td>
-                                <td>{{ move.targetGamePlayerId }}</td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </table>
+
+
+
+
+
+            <div v-if="devMode">
+                    <h5 style="padding-top:20px;">Dev Tools</h5>
+                    <div class="btn-group">
+                        <button @click="startGame" class="btn btn-success" v-if="game.status == 'new'">Start Game</button>
+                        <button @click="tickGame" class="btn btn-warning" v-if="game.status == 'active'">Tick Game</button>
+                        <button @click="deleteGame" class="btn btn-danger">Delete Game</button>
+                    </div>
             </div>
-             -->
         </div>
     </main>
 </template>
@@ -374,6 +355,14 @@ export default {
     background-color: #40474f;
     border: 2px solid #40474f;
     max-width: 1000px;
+    /* grid-auto-rows: 1fr; */
+}
+
+
+@media screen and (max-height: 1070px) {
+    .gameBoard {
+        max-width: 750px; /* this is actually used to control the height of the gameBoard. setting the height makes cells squish?  */
+    }
 }
 
 @media screen and (max-width: 900px) {
@@ -398,7 +387,9 @@ export default {
     z-index: 30;
     display: none;
 }
-
+.apCountdown {
+    font-size: x-small;;
+}
 .gameBoardCell {
     /* box-shadow: inset 0 0 10px #4848488b; */
     background-color: #212529;
@@ -466,5 +457,4 @@ export default {
 .highlight_giveHP:hover {
     background-color: rgba(238, 0, 255, 0.6);
 }
-
 </style>
