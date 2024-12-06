@@ -5,6 +5,10 @@ import router from '../router'
 import DiscordBtn from '../components/DiscordBtn.vue'
 
 export default {
+  created(){
+    window.addEventListener("resize", this.windowResize);
+    this.windowResize()
+  },
   data() {
     const store = useSessionStore()
 
@@ -15,7 +19,13 @@ export default {
       }
     }
     return {
-      store
+      store: store,
+      smallLogin: true
+    }
+  },
+  methods: {
+    windowResize() {
+      this.smallLogin = window.innerWidth <= 770
     }
   },
   components: {
@@ -45,8 +55,8 @@ export default {
           </li>
         </ul>
 
-        <div class="text-end col-3" v-if="!store.isLoggedIn">
-          <DiscordBtn :url="this.$loginUrl">Log In</DiscordBtn>
+        <div class="text-end col-3 loginButtonWrapper" v-if="!store.isLoggedIn">
+          <DiscordBtn :url="this.$loginUrl" target="_self" :small="smallLogin">Log In</DiscordBtn>
         </div>
 
         <div class="text-end col-3" v-if="store.isLoggedIn">
