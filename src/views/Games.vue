@@ -67,9 +67,6 @@ export default {
                       <button class="btn btn-primary">Play Now</button>
                     </RouterLink>
                   </div>
-                  <div v-if="!team.currentGameId">
-                    <RouterLink :to="'/games/' + team.id + '/new'">Create game</RouterLink>
-                  </div>
                 </div>
                 <div class="discordBtnContainer" v-if="!team.isConnected">
                   <DiscordBtn
