@@ -57,7 +57,10 @@ export default {
                     console.log('got game', res.data)
                     this.game = res.data
                     const lip = this.getLoggedInGamePlayer()
-                    this.loggedInPlayerId = lip.PlayerId
+                    if (lip) {
+                        this.loggedInPlayerId = lip.PlayerId
+                    }
+                    
                 })
                 .catch(err => {
                     console.log('game get error', err)
