@@ -41,6 +41,15 @@ export default {
                 this.actnBtnClass = 'btn-group'
             }
         },
+        getAPContainerClass(){
+            const lp = this.getLoggedInGamePlayer();
+            if (lp.status == 'alive') {
+                return lp.actions > 0 ? 'btn-success' : 'btn-warning'
+            } else {
+                return lp.juryVotesToSpend > 0 ? 'btn-success' : 'btn-warning'
+            }
+            
+        },
         refreshGame() {
             console.log('getting game', this.$route.params.gameId)
             this.$api.getGame(this.$route.params.teamId, this.$route.params.gameId)
@@ -144,6 +153,14 @@ export default {
                 this.queuedAction = 'heal'
                 this.actionTargetClick(event)
             }
+        },
+        setupJuryVote(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            const currentPlayer = this.getLoggedInGamePlayer()
+            this.showMoveOptions(30)
+            this.queuedAction = 'juryVote'
         },
         setupShoot(event) {
             if (!this.isCurrentUserPartOfThisGame) {
@@ -265,10 +282,12 @@ export default {
 
                             <div ref="actionButtonDiv" :class="actnBtnClass" role="group" aria-label="Vertical button group">
 
-                                <button :class="'btn btn-success ' + (getLoggedInGamePlayer().actions > 0 ? 'btn-success' : 'btn-warning')"
+                                <button :class="'btn btn-success ' + this.getAPContainerClass()"
                                     style="cursor: default;"
                                     v-tooltip="'You currently have ' + getLoggedInGamePlayer().actions + ' AP to spend on things like movement and healing!'">
-                                    <strong><span class="actionBtnDetail">You have </span>{{ getLoggedInGamePlayer().actions }} AP</strong><br />
+                                    <strong v-if="getLoggedInGamePlayer().status == 'alive'"><span class="actionBtnDetail">You have </span>{{ getLoggedInGamePlayer().actions }} AP</strong>
+                                    <strong v-if="getLoggedInGamePlayer().status == 'dead'"><span class="actionBtnDetail">You have </span>{{ getLoggedInGamePlayer().juryVotesToSpend }} JP</strong>
+                                    <br />
                                     <span v-if="game.status == 'active'" class="apCountdown">
                                         <vue-countdown :time="(new Date(game.nextTickTime)).getTime() - (new Date).getTime()" v-slot="{ days, hours, minutes, seconds }">
                                             <span class="actionBtnDetail">Next AP in </span>~{{ hours?hours+':':'' }}{{ minutes?String(minutes).padStart(2, '0')+' min ':'' }}
@@ -276,27 +295,31 @@ export default {
                                     </span>
                                 </button>
                                 
-                                <button type="button" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Move your piece one space`">
+                                <button type="button" @click="setupJuryVote" v-if="getLoggedInGamePlayer().status == 'dead'" :disabled="getLoggedInGamePlayer().juryVotesToSpend < 1" class="btn btn-secondary" v-tooltip="`Vote to haunt a player. Player with most votes get no AP next cycle.`">
+                                    🗳️ <span class="actionBtnDetail">Haunt (1 JP)</span>
+                                </button>
+                                
+                                <button type="button" @click="setupMove" v-if="getLoggedInGamePlayer().status == 'alive'" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Move your piece one space`">
                                     🏃 <span class="actionBtnDetail">Move (1 AP)</span>
                                 </button>
 
-                                <button type="button" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Shoot another player, destroying one of their hearts`">
+                                <button type="button" @click="setupShoot" v-if="getLoggedInGamePlayer().status == 'alive'" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Shoot another player, destroying one of their hearts`">
                                     💥 <span class="actionBtnDetail">Shoot (1 AP)</span>
                                 </button>
 
-                                <button type="button" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Give a player in range one of your AP`">
+                                <button type="button" @click="setupGiveAP" v-if="getLoggedInGamePlayer().status == 'alive'" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Give a player in range one of your AP`">
                                     🤝 <span class="actionBtnDetail">Give AP (1 AP)</span>
                                 </button>
 
-                                <button type="button" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2" class="btn btn-secondary" v-tooltip="`Give a player in range one of your HP`">
+                                <button type="button" @click="setupGiveHP" v-if="getLoggedInGamePlayer().status == 'alive'" :disabled="getLoggedInGamePlayer().health < 2" class="btn btn-secondary" v-tooltip="`Give a player in range one of your HP`">
                                     💌 <span class="actionBtnDetail">Give HP (1 HP)</span>
                                 </button>
 
-                                <button type="button" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary" v-tooltip="`Add one heart for three AP`">
+                                <button type="button" @click="setupHeal" v-if="getLoggedInGamePlayer().status == 'alive'" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary" v-tooltip="`Add one heart for three AP`">
                                     ❤️ <span class="actionBtnDetail">Heal (3 AP)</span>
                                 </button>
 
-                                <button type="button" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary" v-tooltip="`Increase your range by one`">
+                                <button type="button" @click="setupUpgrade" v-if="getLoggedInGamePlayer().status == 'alive'" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary" v-tooltip="`Increase your range by one`">
                                     🔧 <span class="actionBtnDetail">Upgrade (3 AP)</span>
                                 </button>
 
@@ -498,5 +521,13 @@ export default {
 
 .highlight_giveHP:hover {
     background-color: rgba(238, 0, 255, 0.6);
+}
+
+.highlight_juryVote {
+    background-color: rgba(255, 123, 0, 0.4);
+}
+
+.highlight_juryVote:hover {
+    background-color: rgba(255, 123, 0, 0.709);
 }
 </style>
