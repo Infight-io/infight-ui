@@ -276,27 +276,27 @@ export default {
                                     </span>
                                 </button>
                                 
-                                <button type="button" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
+                                <button type="button" @click="setupMove" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Move your piece one space`">
                                     🏃 <span class="actionBtnDetail">Move (1 AP)</span>
                                 </button>
 
-                                <button type="button" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
+                                <button type="button" @click="setupShoot" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Shoot another player, destroying one of their hearts`">
                                     💥 <span class="actionBtnDetail">Shoot (1 AP)</span>
                                 </button>
 
-                                <button type="button" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary">
+                                <button type="button" @click="setupGiveAP" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Give a player in range one of your AP`">
                                     🤝 <span class="actionBtnDetail">Give AP (1 AP)</span>
                                 </button>
 
-                                <button type="button" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2" class="btn btn-secondary">
+                                <button type="button" @click="setupGiveHP" :disabled="getLoggedInGamePlayer().health < 2" class="btn btn-secondary" v-tooltip="`Give a player in range one of your HP`">
                                     💌 <span class="actionBtnDetail">Give HP (1 HP)</span>
                                 </button>
 
-                                <button type="button" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary">
+                                <button type="button" @click="setupHeal" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary" v-tooltip="`Add one heart for three AP`">
                                     ❤️ <span class="actionBtnDetail">Heal (3 AP)</span>
                                 </button>
 
-                                <button type="button" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary">
+                                <button type="button" @click="setupUpgrade" :disabled="getLoggedInGamePlayer().actions < 3" class="btn btn-secondary" v-tooltip="`Increase your range by one`">
                                     🔧 <span class="actionBtnDetail">Upgrade (3 AP)</span>
                                 </button>
 
