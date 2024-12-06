@@ -416,6 +416,7 @@ export default {
     max-width: 1000px;
     /* grid-auto-rows: 1fr; */
     margin-top:4px;
+    margin-bottom:50px;
 }
 
 
