@@ -28,12 +28,12 @@ export default {
 
   <header class="p-3 text-bg-dark ifNavbar">
     <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <div class="text-start">
-          <RouterLink to="/"><img src="/img/infightLogoSmall.png" class="navLogo" alt="infight.io logo" /></RouterLink>
-        </div>
+      <div class="d-flex flex-wrap">
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <ul class="nav col-9">
+          <li>
+            <RouterLink to="/"><img src="/img/infightLogoSmall.png" class="navLogo" alt="infight.io logo" /></RouterLink>
+          </li>
           <li>
             <RouterLink class="nav-link px-2 text-secondary" to="/">My Games</RouterLink>
           </li>
@@ -45,17 +45,21 @@ export default {
           </li>
         </ul>
 
-        <div class="text-end" v-if="!store.isLoggedIn">
-          <!-- <a type="button" :href="this.$loginUrl" class="btn btn-outline-light me-2">Login</a> -->
+        <div class="text-end col-3" v-if="!store.isLoggedIn">
           <DiscordBtn :url="this.$loginUrl">Log In</DiscordBtn>
         </div>
 
-        <div class="text-end" v-if="store.isLoggedIn">
-          <img :src="'https://cdn.discordapp.com/avatars/' + store.id + '/' + store.avatar + '.png'" class="discordPic" />
-          <strong class="discordName">{{ store.name }}</strong>
-          <a type="button" @click="store.logout()" class="btn btn-outline-light me-2">Logout</a>
+        <div class="text-end col-3" v-if="store.isLoggedIn">
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img :src="'https://cdn.discordapp.com/avatars/' + store.id + '/' + store.avatar + '.png'" class="discordPic" />
+              <strong class="discordName d-none d-lg-inline">{{ store.name }}</strong>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a @click="store.logout()" class="dropdown-item">Logout</a></li>
+            </ul>
+          </div>
         </div>
-        
       </div>
     </div>
   </header>
@@ -74,7 +78,7 @@ export default {
 }
 
 .discordPic {
-  --picSize: 40px;
+  --picSize: 24px;
   height: var(--picSize);
   width: var(--picSize);
   border-radius: 100%;
