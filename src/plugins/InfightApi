@@ -31,6 +31,16 @@ export default {
                     method: 'get'
                 })
             },
+            postGuildOptIn: async function (teamId, optIn) {
+                return await axios({
+                    url: apiRoot + '/guild/' + teamId + '/optIn',
+                    method: 'post',
+                    headers: { 'Authorization': store.jwt },
+                    data: {
+                        optIn: optIn
+                    }
+                })
+            },
             tickGame: async function (teamId, gameId) {
                 return await axios({
                     url: apiRoot + '/games/' + teamId + '/' + gameId + '/tick',
