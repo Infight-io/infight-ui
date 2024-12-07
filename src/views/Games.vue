@@ -141,7 +141,4 @@ export default {
   /* margin-left:20%; */
   margin-bottom: 30px;
 }
-
-.discordBtnContainer {
-}
 </style>

@@ -25,10 +25,6 @@ export default {
                 gridColumnStart: this.GamePlayer.positionX + 1,
                 gridRowStart: this.GamePlayer.positionY + 1
             }
-        },
-        dmUser(userId) {
-            //console.log('dmUser', userId)
-            window.location.href = 'discord://discordapp.com/users/' + userId + '/'
         }
     },
     created() {
@@ -39,8 +35,7 @@ export default {
 </script>
 
 <template>
-    <VDropdown :distance="6" :triggers="['hover']" :class="'gamePiece'"
-        :style="genStyleProps()" @click="dmUser(GamePlayer.Player.id)">
+    <VDropdown :distance="6" :triggers="['hover']" :class="'gamePiece'" :style="genStyleProps()">
         <div :class="'avatarBg' + currentGamePieceClass()"
             :style="{ backgroundImage: 'url(https://cdn.discordapp.com/avatars/' + GamePlayer.Player.id + '/' + GamePlayer.Player.avatar + '.png)' }">
         </div>
