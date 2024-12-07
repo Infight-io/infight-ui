@@ -64,7 +64,7 @@ export default {
                 })
                 .catch(err => {
                     console.log('game get error', err)
-                    this.toast.error("Could not load game", { timeout: false });
+                    this.toast.error("Could not load game");
                 })
         },
         tickGame(event) {
