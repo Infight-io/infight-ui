@@ -84,7 +84,7 @@ export default {
           <p class="lead"></p>
           <p>Infight.io is a board game you play alongside your favorite discord servers.
             To win an infight, you need to team up with other players, share resources and
-            edge out you friends.
+            edge out your friends.
           </p>
 
           <p><RouterLink to="/FAQ">Check out the rules</RouterLink> and invite your friends!</p>
