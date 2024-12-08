@@ -298,8 +298,8 @@ export default {
                                     </span>
                                 </button>
                                 
-                                <button type="button" @click="setupJuryVote" v-if="getLoggedInGamePlayer().status == 'dead'" :disabled="getLoggedInGamePlayer().juryVotesToSpend < 1" class="btn btn-secondary" v-tooltip="`Vote to haunt a player. Player with most votes get no AP next cycle.`">
-                                    🗳️ <span class="actionBtnDetail">Haunt (1 JP)</span>
+                                <button type="button" @click="setupJuryVote" v-if="getLoggedInGamePlayer().status == 'dead'" :disabled="getLoggedInGamePlayer().juryVotesToSpend < 1" class="btn btn-secondary" v-tooltip="`Vote to treat a player. Player with most votes get an EXTRA AP next cycle.`">
+                                    🗳️ <span class="actionBtnDetail">Treat (1 JP)</span>
                                 </button>
                                 
                                 <button type="button" @click="setupMove" v-if="getLoggedInGamePlayer().status == 'alive'" :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary" v-tooltip="`Move your piece one space`">

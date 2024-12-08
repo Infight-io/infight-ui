@@ -37,7 +37,7 @@ import { h } from 'vue';
                         and 0 AP.</p>
 
                     <p>Dead players form a jury. Each action cycle they may vote, and whoever received most votes will
-                        be 'haunted', and not receive any AP next cycle.</p>
+                        be 'treated', and  receive an EXTRA AP next cycle.</p>
 
                     <h4>Notes</h4>
 
