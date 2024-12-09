@@ -536,8 +536,8 @@ export default {
     height: 1fr;
     background-image: url(/img/lightningAnimLoop.webp);
     background-repeat: no-repeat;
-    background-position-x: 0;
-    background-size: cover;
+    background-position: center;
+    background-size: contain;
 }
 
 @keyframes heartBounce {
