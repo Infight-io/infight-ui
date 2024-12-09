@@ -84,7 +84,7 @@ export default {
             <div class="row roundedGameBox" v-for="game in guild.Games">
                 <div class="col-lg-3">
                     <h3><RouterLink :to="`/games/${guild.id}/${game.id}`">Game {{ game.id }}</RouterLink> <span :class="'badge text-bg-' + stateToBootstrapFlavor(game.status)">{{ game.status }}</span></h3>
-                    <p>{{ game.startTime }}</p>
+                    <p>{{ game.createdAt }}</p>
                     
                 </div>
                 <div class="col-lg-9">
