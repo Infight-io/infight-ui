@@ -47,7 +47,7 @@ import { h } from 'vue';
 
                     <p>The game ends when a the next-to last player is elimated.</p>
 
-                    <p>Action points are secret! Probably a good idea to try and hide how many you have.</p>
+                    <p>When the game is down to two players, a storm comes and damages anyone near the edges of the map. It closes in every cycle.</p>
 
                     <p>You can't win this game without making some friends and stabbing some backs. Probably.</p>
 
@@ -74,14 +74,16 @@ import { h } from 'vue';
                     A <strong>Discord server admin</strong> needs to add infight. Ask your administrator very nicely.
                     </div>
 
-<h4>How many players do I need?</h4>
-<p>The more the merrier! Infight is a game of coordination and intrigue. Games really start getting
-    good at a dozen or more players and can be played with many dozens of players.
-</p>
+                    <h4>How many players do I need?</h4>
+                    <p>The more the merrier! Infight is a game of coordination and intrigue. Games really start getting
+                        good at a dozen or more players and can be played with many dozens of players.
+                    </p>
 
+                    <h4>You mean I can't move again for <em>a whole day?</em></h4>
 
-<h4>You mean I can't move again for <em>a whole day?</em></h4>
-                    <p>Action points do come slowly. The trick is, the timer's not the only thing with action points.
+                    
+                    <p><img src="/img/lightningAnimLoop.webp" class="float-start" alt="a pretty red heart" style="width:120px;">
+                        Action points do come slowly. The trick is, the timer's not the only thing with action points.
                         Talk to the other players on discord and coordinate how you can use your points together to 
                         achieve big things quickly! Remember, you can share AP and HP with others. 
                     </p>

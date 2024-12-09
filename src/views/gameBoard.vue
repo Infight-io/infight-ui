@@ -12,7 +12,7 @@ export default {
         return { toast }
     },
     async created() {
-        this.refreshGame()
+        //this.refreshGame()
         const sse = await this.$api.connectToGameEvents(this.$route.params.teamId, this.$route.params.gameId)
         sse.addEventListener("message", ({ data }) => {
             console.log(JSON.parse(data));
@@ -20,6 +20,9 @@ export default {
         })
         window.addEventListener("resize", this.windowResize);
         this.windowResize()
+        setInterval(() => {
+            this.cycleLightning()
+        }, 22*70) //gif animation duration 22 frame gif animation with 
     },
     data() {
         const store = useSessionStore()
@@ -30,10 +33,45 @@ export default {
             queuedAction: null,
             loggedInPlayerId: null,
             devMode: import.meta.env.DEV,
-            actnBtnClass: 'btn-group-vertical'
+            actnBtnClass: 'btn-group-vertical',
+            lightningLocations: []
         }
     },
     methods: {
+        cycleLightning() {
+            if (this.game.suddenDeathRound > 0) {
+                const boardSize = this.game.boardWidth;
+                const edgeDistance = this.game.suddenDeathRound;
+                let spots = [];
+                const lightningCount = 3 * edgeDistance;
+                for (let i = 0; i < lightningCount; i++) {
+                    const randomEdge = Math.floor(Math.random() * 4);
+                    let randomX, randomY;
+
+                    switch (randomEdge) {
+                        case 0: // Top edge
+                            randomX = Math.floor(Math.random() * boardSize);
+                            randomY = Math.floor(Math.random() * edgeDistance);
+                            break;
+                        case 1: // Bottom edge
+                            randomX = Math.floor(Math.random() * boardSize);
+                            randomY = boardSize - 1 - Math.floor(Math.random() * edgeDistance);
+                            break;
+                        case 2: // Left edge
+                            randomX = Math.floor(Math.random() * edgeDistance);
+                            randomY = Math.floor(Math.random() * boardSize);
+                            break;
+                        case 3: // Right edge
+                            randomX = boardSize - 1 - Math.floor(Math.random() * edgeDistance);
+                            randomY = Math.floor(Math.random() * boardSize);
+                            break;
+                    }
+                    spots.push([randomX, randomY]);
+                }
+                //console.log(spots)
+                this.lightningLocations = spots
+            }
+        },
         windowResize(){
             if(window.innerWidth > 575) {
                 this.actnBtnClass = 'btn-group-vertical'
@@ -60,7 +98,6 @@ export default {
                     if (lip) {
                         this.loggedInPlayerId = lip.PlayerId
                     }
-                    
                 })
                 .catch(err => {
                     console.log('game get error', err)
@@ -269,7 +306,7 @@ export default {
                     
 
                     <div class="gameBar">
-                        <p>
+                        <p class="mt-3">
                             <RouterLink :to="`/guild/${ game.GuildId }`">
                                 <DiscordServerIcon v-if="game.Guild" :serverId="game.GuildId" :icon="game.Guild.icon"
                                 :name="game.Guild.name" />
@@ -355,6 +392,9 @@ export default {
                             The game cannot start. There aren't enough players ({{ game.minimumPlayerCount }}) opted into play yet! Invite a friend, or join yourself!
                         </div>
                     </div>
+                    <div v-if="game.suddenDeathRound > 0 && game.status == 'active'" class="alert alert-warning mt-3">
+                        <strong>Sudden Death!</strong> Lightning is about to strike the outer {{game.suddenDeathRound}} squares! Run for the middle!
+                    </div>
                     <div class="gameBoard" :style="genGameboardStyle()">
 
                         <template v-for="gp in game.GamePlayers">
@@ -366,6 +406,11 @@ export default {
                             <div class="heartContainer"
                                 :style="{ gridColumnStart: heartLocation[0] + 1, gridRowStart: heartLocation[1] + 1 }"
                                 v-tooltip="'Move here to gain a heart!'"></div>
+                        </template>
+
+                        <template v-for="blast in lightningLocations" v-if="game.status=='active'">
+                            <div class="lightningContainer"
+                                :style="{ gridColumnStart: blast[0] + 1, gridRowStart: blast[1] + 1 }"></div>
                         </template>
 
                         <template v-for="x in game.boardWidth">
@@ -480,6 +525,16 @@ export default {
     width: 1fr;
     height: 1fr;
     background-image: url(/img/pixelHeart.png);
+    background-repeat: no-repeat;
+    background-position-x: 0;
+    background-size: cover;
+}
+
+.lightningContainer {
+    z-index: 20;
+    width: 1fr;
+    height: 1fr;
+    background-image: url(/img/lightningAnimLoop.webp);
     background-repeat: no-repeat;
     background-position-x: 0;
     background-size: cover;
