@@ -77,7 +77,7 @@ export default {
                 <div class="row">
                   <div class="col-8">
                     <DiscordServerIcon :serverId="pg.Guild.id" :icon="pg.Guild.icon" :name="pg.Guild.name" />
-                    <strong class="display-6">{{ pg.Guild.name }}</strong>
+                    <RouterLink :to="`/guild/${ pg.Guild.id }`"><strong class="display-6">{{ pg.Guild.name }}</strong></RouterLink>
                   </div>
                   <div class="col-4 text-end">
                       <span class="btn-group" v-if="pg.Guild.isConnected">

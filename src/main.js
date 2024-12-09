@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
-import api from './plugins/InfightApi'
+import api from './plugins/InfightApi.js'
 
 import Toast from "vue-toastification"
 import "vue-toastification/dist/index.css"

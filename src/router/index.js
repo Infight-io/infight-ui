@@ -14,6 +14,11 @@ const router = createRouter({
       component: () => import('../views/gameBoard.vue')
     },
     {
+      path: '/guild/:teamId',
+      name: 'Guild',
+      component: () => import('../views/Guild.vue')
+    },
+    {
       path: '/leaderboards',
       name: 'leaderboards',
       component: () => import('../views/Leaderboards.vue')

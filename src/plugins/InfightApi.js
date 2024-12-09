@@ -31,6 +31,12 @@ export default {
                     method: 'get'
                 })
             },
+            getGuild: async function (teamId) {
+                return await axios({
+                    url: apiRoot + '/guild/' + teamId,
+                    method: 'get'
+                })
+            },
             postGuildOptIn: async function (teamId, optIn) {
                 return await axios({
                     url: apiRoot + '/guild/' + teamId + '/optIn',
