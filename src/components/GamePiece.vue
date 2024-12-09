@@ -75,7 +75,6 @@ export default {
     margin: 5px;
     z-index: 20;
     transition: 300ms;
-    cursor:pointer;
     container-type: size;
 }
 
