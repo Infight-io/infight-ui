@@ -91,7 +91,7 @@ export default {
                 </div>
                 <div class="col-lg-9">
                     <div v-for="gamePlayer in game.GamePlayers" class="playerDood">
-                        <strong v-if="!['action', 'new'].includes(game.status)">{{ placeToEmoji(gamePlayer.winPosition) + gamePlayer.winPosition }}.</strong><br />
+                        <strong v-if="!['active', 'new'].includes(game.status)">{{ placeToEmoji(gamePlayer.winPosition) + gamePlayer.winPosition }}.</strong><br />
                         <img :src="'https://cdn.discordapp.com/avatars/' + gamePlayer.Player.id + '/' + gamePlayer.Player.avatar + '.png'" class="playerPic" v-tooltip="gamePlayer.Player.name " />
                     </div>
                 </div>
