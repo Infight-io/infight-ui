@@ -110,6 +110,7 @@ export default {
     height: 40px;
     border-radius: 100%;
     display:inline-block;
+    margin:3px 6px;
 }
 .roundedGameBox{
     border: 1px solid #40474f;
