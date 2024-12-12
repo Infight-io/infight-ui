@@ -63,6 +63,7 @@ import { h } from 'vue';
 
                     <img src="/img/explosion.gif" class="float-end" alt="big bada boom" style="width:120px;">
                     <h4>How do I get started?</h4>
+                    <p>Follow our <RouterLink to="/adminGuide">Server Admin Guide</RouterLink> when you add Infight to your Discord server.</p>
                     <p>You need to add Infight to your favorite Discord server from the <RouterLink to="/">Games</RouterLink> page.
                         You'll need to be an adminstrator to do this. Once added, there'll be a new
                         <code>#infight</code>
@@ -71,7 +72,7 @@ import { h } from 'vue';
                     </p>
 
                     <div class="alert alert-primary" role="alert">
-                    A <strong>Discord server admin</strong> needs to add infight. Ask your administrator very nicely.
+                    A <strong>Discord server admin</strong> needs to <RouterLink to="/adminGuide">add infight</RouterLink>. Ask your administrator very nicely.
                     </div>
 
                     <h4>How many players do I need?</h4>
