@@ -37,6 +37,18 @@ export default {
                     method: 'get'
                 })
             },
+            saveGuildSettings: async function (id, boardSize, minimumPlayerCount, actionTimerMinutes) {
+                return await axios({
+                    url: apiRoot + '/guild/' + id + '/settings',
+                    method: 'post',
+                    headers: { 'Authorization': store.jwt },
+                    data: {
+                        boardSize: boardSize,
+                        minimumPlayerCount: minimumPlayerCount,
+                        actionTimerMinutes: actionTimerMinutes
+                    }
+                })
+            },
             postGuildOptIn: async function (teamId, optIn) {
                 return await axios({
                     url: apiRoot + '/guild/' + teamId + '/optIn',
