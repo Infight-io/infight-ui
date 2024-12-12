@@ -275,7 +275,7 @@ export default {
                             this.$refs.explosion.style.display = ''
                         }, 1000)
                     }
-                    this.toast.success(res.data);
+                    //this.toast.success(res.data);
                     this.cancelMove()
                     this.refreshGame()
                 }).catch(err => {
