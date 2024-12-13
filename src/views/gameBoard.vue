@@ -232,6 +232,16 @@ export default {
             this.showMoveOptions(30)
             this.queuedAction = 'juryVote'
         },
+        setupStartFire(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            const currentPlayer = this.getLoggedInGamePlayer()
+            this.showMoveOptions(30)
+            this.queuedAction = 'startFire'
+        },
+
+
         setupShoot(event) {
             if (!this.isCurrentUserPartOfThisGame) {
                 return
@@ -380,6 +390,13 @@ export default {
                                     🗳️ <span class="actionBtnDetail">Treat (1 JP)</span>
                                 </button>
 
+                                <button type="button" @click="setupStartFire"
+                                    v-if="getLoggedInGamePlayer().status == 'dead'"
+                                    :disabled="getLoggedInGamePlayer().juryVotesToSpend < 1" class="btn btn-secondary"
+                                    v-tooltip="`Start a goddamned fire!`">
+                                    🔥 <span class="actionBtnDetail">Set Fire (1 JP)</span>
+                                </button>
+
                                 <button type="button" @click="setupMove"
                                     v-if="getLoggedInGamePlayer().status == 'alive'"
                                     :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary"
@@ -469,10 +486,15 @@ export default {
                                 :isWinner="gp.id == game.winningPlayerId" />
                         </template>
 
-                        <template v-for="heartLocation in game.boardHeartLocations">
-                            <div class="heartContainer"
-                                :style="{ gridColumnStart: heartLocation[0] + 1, gridRowStart: heartLocation[1] + 1 }"
+                        <template v-for="objectLocation in game.boardObjectLocations">
+
+                            <div class="heartContainer" v-if="objectLocation.type == 'heart'"
+                                :style="{ gridColumnStart: objectLocation.x + 1, gridRowStart: objectLocation.y + 1 }"
                                 v-tooltip="'Move here to gain a heart!'"></div>
+
+                            <div class="fireSquare" v-if="objectLocation.type == 'fire'"
+                                :style="{ gridColumnStart: objectLocation.x + 1, gridRowStart: objectLocation.y + 1 }"
+                                v-tooltip="'Fires spread, watch out!'"></div>
                         </template>
 
                         <template v-for="blast in lightningLocations" v-if="game.status == 'active'">
@@ -600,6 +622,16 @@ export default {
     background-size: cover;
 }
 
+.fireSquare {
+    z-index: 25;
+    width: 1fr;
+    height: 1fr;
+    background-image: url(/img/bonfire.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:contain;
+}
+
 .lightningContainer {
     z-index: 20;
     width: 1fr;
@@ -658,5 +690,13 @@ export default {
 
 .highlight_juryVote:hover {
     background-color: rgba(255, 123, 0, 0.709);
+}
+
+.highlight_startFire {
+    background-color: rgba(255, 55, 0, 0.557);
+}
+
+.highlight_startFire:hover {
+    background-color: rgba(255, 55, 0, 0.709);
 }
 </style>
