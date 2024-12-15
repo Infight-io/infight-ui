@@ -386,8 +386,8 @@ export default {
                                 <button type="button" @click="setupJuryVote"
                                     v-if="getLoggedInGamePlayer().status == 'dead'"
                                     :disabled="getLoggedInGamePlayer().juryVotesToSpend < 1" class="btn btn-secondary"
-                                    v-tooltip="`Vote to treat a player. Player with most votes get an EXTRA AP next cycle. Hotkey: V`">
-                                    🗳️ <span class="actionBtnDetail">Treat (1 JP)</span>
+                                    v-tooltip="`Treat a player to an extra AP`">
+                                    🍬 <span class="actionBtnDetail">Treat (1 JP)</span>
                                 </button>
 
                                 <button type="button" @click="setupStartFire"
@@ -487,6 +487,10 @@ export default {
                         </template>
 
                         <template v-for="objectLocation in game.boardObjectLocations">
+
+                            <div class="goalSquare" v-if="objectLocation.type == 'goal'"
+                                :style="{ gridColumnStart: objectLocation.x + 1, gridRowStart: objectLocation.y + 1 }"
+                                v-tooltip="'Hold this space to score!'"></div>
 
                             <div class="heartContainer" v-if="objectLocation.type == 'heart'"
                                 :style="{ gridColumnStart: objectLocation.x + 1, gridRowStart: objectLocation.y + 1 }"
@@ -627,6 +631,16 @@ export default {
     width: 1fr;
     height: 1fr;
     background-image: url(/img/bonfire.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size:contain;
+}
+
+.goalSquare {
+    z-index: 11;
+    width: 1fr;
+    height: 1fr;
+    background-image: url(/img/GoalBlock.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size:contain;
