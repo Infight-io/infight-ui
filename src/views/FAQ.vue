@@ -11,9 +11,15 @@ import { h } from 'vue';
 
                     <h2 class="mt-5">Infight Rules</h2>
 
-                    <p>All players start at a random location on the grid, and have 3 hearts and 1 Action Point.</p>
+                    <img src="/img/GoalBlock.png" class="float-end" alt="The Goal Square" style="width:120px; margin-left:18px;">
+                    <p>The object of the game is to hold the goal square in the middle of the board. If you're alive and standing
+                        on the goal square at the end of the cycle, you'll get a point. The first player to 5 points wins.
+                    </p>
 
-                    <p>Every <strong>game interval</strong>, usually every 24 hours, everyone will receive 1 <strong>Action Point</strong> (AP).</p>
+                    <p>All players start along the edge of the grid.</p>
+
+                    <p>Every <strong>game interval</strong>, everyone will receive <strong>2
+                            Action Points</strong> (AP).</p>
                     <img src="/img/pixelCrown.png" class="float-end" alt="a pretty red heart" style="width:120px;">
 
                     <p>At any time you like, you can do one of the following actions:</p>
@@ -26,28 +32,24 @@ import { h } from 'vue';
                             can shoot or trade with somehow within 2 squares of them. Upgrading your shooting range
                             increases this by 1 square each time.</li>
                         <li>Send gifts of hearts or actions points to any player currently within their range.</li>
+                        <li>Shove a player away one square. (1 AP)</li>
                     </ul>
 
                     <p>If a player is reduced to zero (0) hearts, then they are dead. Any action points the dead player
-                        had are transferred to the player who killed them. Dead players remain on the board and not
-                        removed.</p>
+                        had are transferred to the player who killed them. Dead players respawn next cycle.</p>
 
                     <img src="/img/pixelSkull.png" class="float-start" alt="skull and crossbones" style="width:120px;">
                     <p>Dead players can have a heart sent to them. This will revive that player who will have 1 heart
                         and 0 AP.</p>
 
-                    <p>Dead players form a jury. Each action cycle they may vote, and whoever received most votes will
-                        be 'treated', and  receive an EXTRA AP next cycle.</p>
+                    <p>Dead players can either start a fire or give another player an extra AP while they're dead.</p>
 
                     <h4>Notes</h4>
 
                     <img src="/img/pixelHeart.png" class="float-end" alt="a pretty red heart" style="width:120px;">
-                    <p>Sometimes, a heart will spawn on the field. The first player to move into the square containing
-                        the heart will pick up that additional heart.</p>
+                    <p>Every cycle, hearts and bolts will appear on the field. Pick them up to gain a heart or 2-4 AP.</p>
 
-                    <p>The game ends when a the next-to last player is elimated.</p>
-
-                    <p>When the game is down to two players, a storm comes and damages anyone near the edges of the map. It closes in every cycle.</p>
+                    <p>The game ends when someone reaches five points, or one player kills all other players.</p>
 
                     <p>You can't win this game without making some friends and stabbing some backs. Probably.</p>
 
@@ -63,8 +65,10 @@ import { h } from 'vue';
 
                     <img src="/img/explosion.gif" class="float-end" alt="big bada boom" style="width:120px;">
                     <h4>How do I get started?</h4>
-                    <p>Follow our <RouterLink to="/adminGuide">Server Admin Guide</RouterLink> when you add Infight to your Discord server.</p>
-                    <p>You need to add Infight to your favorite Discord server from the <RouterLink to="/">Games</RouterLink> page.
+                    <p>Follow our <RouterLink to="/adminGuide">Server Admin Guide</RouterLink> when you add Infight to
+                        your Discord server.</p>
+                    <p>You need to add Infight to your favorite Discord server from the <RouterLink to="/">Games
+                        </RouterLink> page.
                         You'll need to be an adminstrator to do this. Once added, there'll be a new
                         <code>#infight</code>
                         channel on your server. Head in there and use the command <code>/infight-join</code> to be part
@@ -72,7 +76,8 @@ import { h } from 'vue';
                     </p>
 
                     <div class="alert alert-primary" role="alert">
-                    A <strong>Discord server admin</strong> needs to <RouterLink to="/adminGuide">add infight</RouterLink>. Ask your administrator very nicely.
+                        A <strong>Discord server admin</strong> needs to <RouterLink to="/adminGuide">add infight
+                        </RouterLink>. Ask your administrator very nicely.
                     </div>
 
                     <h4>How many players do I need?</h4>
@@ -82,17 +87,20 @@ import { h } from 'vue';
 
                     <h4>You mean I can't move again for <em>a whole day?</em></h4>
 
-                    
-                    <p><img src="/img/lightningAnimLoop.webp" class="float-start" alt="a pretty red heart" style="width:120px;">
+
+                    <p><img src="/img/lightningAnimLoop.webp" class="float-start" alt="a pretty red heart"
+                            style="width:120px;">
                         Action points do come slowly. The trick is, the timer's not the only thing with action points.
-                        Talk to the other players on discord and coordinate how you can use your points together to 
-                        achieve big things quickly! Remember, you can share AP and HP with others. 
+                        Talk to the other players on discord and coordinate how you can use your points together to
+                        achieve big things quickly! Remember, you can share AP and HP with others.
                     </p>
 
 
                     <h4>Is this Tank Turn Tactics?</h4>
-                    <p>Good eye! Infight's gameplay is very much inspired by <a href="https://lukemuscat.com/" target="_blank">Luke Muskat's</a>
-                        banned <a href="https://www.youtube.com/watch?v=t9WMNuyjm4w" target="_blank">pen and paper tabletop game.</a> Infight is
+                    <p>Good eye! Infight's gameplay is very much inspired by <a href="https://lukemuscat.com/"
+                            target="_blank">Luke Muskat's</a>
+                        banned <a href="https://www.youtube.com/watch?v=t9WMNuyjm4w" target="_blank">pen and paper
+                            tabletop game.</a> Infight is
                         built from scratch to make this game concept real on the internet!
                     </p>
                 </div>
