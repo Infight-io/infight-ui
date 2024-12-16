@@ -574,6 +574,7 @@ export default {
                     </p>
                     <ol v-if="sortedScoreboard.length > 0">
                         <li v-for="gp in sortedScoreboard">
+                            <img :src="'https://cdn.discordapp.com/avatars/' + gp.Player.id + '/' + gp.Player.avatar + '.png'" class="scoreboardAvatar" v-tooltip="gp.Player.name" />
                             <strong>{{ gp.Player.name }}</strong> {{ gp.stats.gamePoint }} points{{ gp.stats.killedSomeone? `, ${gp.stats.killedSomeone} kills`:`` }}
                         </li>
                     </ol>
@@ -596,6 +597,12 @@ export default {
     padding-top: 20px;
 }
 
+.scoreboardAvatar {
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+}
 .gameBoard {
     display: grid;
     transition: 300ms;
