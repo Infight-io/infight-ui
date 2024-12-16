@@ -52,6 +52,9 @@ export default {
                 case 's':
                     this.setupShoot()
                     break;
+                case 'p':
+                    this.setupShove()
+                    break;
                 case 'a':
                     this.setupGiveAP()
                     break;
@@ -250,6 +253,14 @@ export default {
             this.showMoveOptions(currentPlayer.range)
             this.queuedAction = 'shoot'
         },
+        setupShove(event) {
+            if (!this.isCurrentUserPartOfThisGame) {
+                return
+            }
+            const currentPlayer = this.getLoggedInGamePlayer()
+            this.showMoveOptions(1)
+            this.queuedAction = 'shove'
+        },
         setupGiveAP(event) {
             if (!this.isCurrentUserPartOfThisGame) {
                 return
@@ -409,6 +420,13 @@ export default {
                                     :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary"
                                     v-tooltip="`Shoot another player, destroying one of their hearts. Hotkey: S`">
                                     💥 <span class="actionBtnDetail">Shoot (1 AP)</span>
+                                </button>
+
+                                <button type="button" @click="setupShove"
+                                    v-if="getLoggedInGamePlayer().status == 'alive'"
+                                    :disabled="getLoggedInGamePlayer().actions < 1" class="btn btn-secondary"
+                                    v-tooltip="`Shove a player. For fun! Hotkey: P`">
+                                    🫸 <span class="actionBtnDetail">Shove (1 AP)</span>
                                 </button>
 
                                 <button type="button" @click="setupGiveAP"
@@ -741,5 +759,13 @@ export default {
 
 .highlight_startFire:hover {
     background-color: rgba(255, 55, 0, 0.709);
+}
+
+.highlight_shove {
+    background-color: rgba(81, 0, 255, 0.3);
+}
+
+.highlight_shove:hover {
+    background-color: rgba(81, 0, 255, 0.5);
 }
 </style>
