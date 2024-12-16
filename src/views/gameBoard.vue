@@ -44,9 +44,17 @@ export default {
     },
     computed: {
         sortedScoreboard() {
-
-            const playersWithPoints = this.game.GamePlayers.filter(player => player.stats.gamePoint !== undefined && player.stats.gamePoint > 0);
-            return playersWithPoints.sort((a, b) => {
+            this.game.GamePlayers.forEach(player => {
+                if (player.stats.gamePoint === undefined) {
+                    player.stats.gamePoint = 0;
+                }
+            });
+            // const playersWithPoints = this.game.GamePlayers.filter(player => player.stats.gamePoint !== undefined && player.stats.gamePoint > 0);
+            return this.game.GamePlayers.sort((a, b) => {
+                
+                if (b.stats.gamePoint === a.stats.gamePoint) {
+                    return b.stats.killedSomeone - a.stats.killedSomeone;
+                }
                 return b.stats.gamePoint - a.stats.gamePoint
             })
         }
@@ -575,7 +583,10 @@ export default {
                     <ol v-if="sortedScoreboard.length > 0">
                         <li v-for="gp in sortedScoreboard">
                             <img :src="'https://cdn.discordapp.com/avatars/' + gp.Player.id + '/' + gp.Player.avatar + '.png'" class="scoreboardAvatar" v-tooltip="gp.Player.name" />
-                            <strong>{{ gp.Player.name }}</strong> {{ gp.stats.gamePoint }} points{{ gp.stats.killedSomeone? `, ${gp.stats.killedSomeone} kills`:`` }}
+                            <strong>{{ gp.Player.name }}</strong> {{ gp.stats.gamePoint }} points
+                            {{ gp.stats.killedSomeone? `- ${gp.stats.killedSomeone} kills`:`` }}
+                            {{ gp.stats.wasKilled? `- ${gp.stats.wasKilled} deaths`:`` }}
+                            {{ gp.stats.walked? `- ${gp.stats.walked} steps`:`` }}
                         </li>
                     </ol>
                     <div v-else class="alert alert-info">
