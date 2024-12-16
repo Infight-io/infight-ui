@@ -566,9 +566,12 @@ export default {
                 </div>
             </div>
             <div class="row" v-if="game.status == 'active'">
-                <div class="col-lg-6 offset-lg-3">
-                    <h2 class="mt-5">Scores</h2>
-                    <p class="small">Points are earned by holding the goal square when the game ticks. First player to <strong>five points</strong> wins!</p>
+                <div class="card col-lg-6 offset-lg-3 p-4">
+                    <h2>🏆 Scoreboard 🏆</h2>
+                    <p class="small">
+                        Points are earned by holding the goal square when the game ticks. First player to <strong>five points</strong> wins!
+                        Band together to shove 'em off of there if you have to! 
+                    </p>
                     <ol v-if="sortedScoreboard.length > 0">
                         <li v-for="gp in sortedScoreboard">
                             <strong>{{ gp.Player.name }}</strong> {{ gp.stats.gamePoint }} points{{ gp.stats.killedSomeone? `, ${gp.stats.killedSomeone} kills`:`` }}
