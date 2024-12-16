@@ -42,6 +42,15 @@ export default {
             lightningLocations: []
         }
     },
+    computed: {
+        sortedScoreboard() {
+
+            const playersWithPoints = this.game.GamePlayers.filter(player => player.stats.gamePoint !== undefined && player.stats.gamePoint > 0);
+            return playersWithPoints.sort((a, b) => {
+                return b.stats.gamePoint - a.stats.gamePoint
+            })
+        }
+    },
     methods: {
         handleKeypress(event) {
             //console.log('Key pressed:', event.key);
@@ -555,6 +564,21 @@ export default {
                         💀 <span class="actionBtnDetail">Delete Game</span>
                     </button>
                 </div>
+            </div>
+            <div class="row" v-if="game.status == 'active'">
+                <div class="col-lg-6 offset-lg-3">
+                    <h2 class="mt-5">Scores</h2>
+                    <p class="small">Points are earned by holding the goal square when the game ticks. First player to <strong>five points</strong> wins!</p>
+                    <ol v-if="sortedScoreboard.length > 0">
+                        <li v-for="gp in sortedScoreboard">
+                            <strong>{{ gp.Player.name }}</strong> {{ gp.stats.gamePoint }} points{{ gp.stats.killedSomeone? `, ${gp.stats.killedSomeone} kills`:`` }}
+                        </li>
+                    </ol>
+                    <div v-else class="alert alert-info">
+                        No points yet! Get to that goal square!
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
