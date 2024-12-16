@@ -577,7 +577,8 @@ export default {
                 <div class="card col-lg-6 offset-lg-3 p-4">
                     <h2 class="text-center">🏆 Scoreboard 🏆</h2>
                     <p class="small">
-                        Points are earned by holding the goal square when the game ticks. First player to <strong>five points</strong> wins!
+                        Points are earned by holding the <strong>Goal Square (<img src="/img/GoalBlock.png" style="height: 16px;margin:0 5px;" />)</strong>
+                         when the game ticks. First player to <strong>five points</strong> wins!
                         Band together to shove 'em off of there if you have to! 
                     </p>
                     <ol v-if="sortedScoreboard.length > 0">
