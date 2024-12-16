@@ -584,9 +584,10 @@ export default {
                         <li v-for="gp in sortedScoreboard">
                             <img :src="'https://cdn.discordapp.com/avatars/' + gp.Player.id + '/' + gp.Player.avatar + '.png'" class="scoreboardAvatar" v-tooltip="gp.Player.name" />
                             <strong>{{ gp.Player.name }}</strong> {{ gp.stats.gamePoint }} points
-                            {{ gp.stats.killedSomeone? `- ${gp.stats.killedSomeone} kills`:`` }}
-                            {{ gp.stats.wasKilled? `- ${gp.stats.wasKilled} deaths`:`` }}
-                            {{ gp.stats.walked? `- ${gp.stats.walked} steps`:`` }}
+                            <span class="d-none d-sm-none d-md-inline">
+                                {{ gp.stats.killedSomeone? `- ${gp.stats.killedSomeone} kills`:`` }}
+                                {{ gp.stats.wasKilled? `- ${gp.stats.wasKilled} deaths`:`` }}
+                            </span>
                         </li>
                     </ol>
                     <div v-else class="alert alert-info">
