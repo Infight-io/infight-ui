@@ -567,7 +567,7 @@ export default {
             </div>
             <div class="row" v-if="game.status == 'active'">
                 <div class="card col-lg-6 offset-lg-3 p-4">
-                    <h2>🏆 Scoreboard 🏆</h2>
+                    <h2 class="text-center">🏆 Scoreboard 🏆</h2>
                     <p class="small">
                         Points are earned by holding the goal square when the game ticks. First player to <strong>five points</strong> wins!
                         Band together to shove 'em off of there if you have to! 
