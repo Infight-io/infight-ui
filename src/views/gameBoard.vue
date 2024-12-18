@@ -573,7 +573,7 @@ export default {
                     </button>
                 </div>
             </div>
-            <div class="row" v-if="game.status == 'active'">
+            <div class="row" v-if="game.status == 'active' || game.status == 'won'">
                 <div class="card col-lg-6 offset-lg-3 p-4">
                     <h2 class="text-center">🏆 Scoreboard 🏆</h2>
                     <p class="small">
