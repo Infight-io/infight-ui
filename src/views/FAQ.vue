@@ -47,9 +47,9 @@ import { h } from 'vue';
                     <h4>Notes</h4>
 
                     <img src="/img/pixelHeart.png" class="float-end" alt="a pretty red heart" style="width:120px;">
-                    <p>Every cycle, hearts and bolts will appear on the field. Pick them up to gain a heart or 2-4 AP.</p>
+                    <p>Every cycle, hearts and bolts will appear on the field. Pick them up to gain a heart or 1-3 AP.</p>
 
-                    <p>The game ends when someone reaches five points, or one player kills all other players.</p>
+                    <p>The game ends when someone reaches five points.</p>
 
                     <p>You can't win this game without making some friends and stabbing some backs. Probably.</p>
 
