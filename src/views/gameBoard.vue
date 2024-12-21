@@ -551,6 +551,12 @@ export default {
                             </template>
                         </template>
 
+                        <template v-for="x in game.boardWidth">
+                            <template v-for="y in game.boardHeight">
+                                <div class="gameBoardCellSpacer" :style="{ gridRowStart: x, gridColumnStart: y }"></div>
+                            </template>
+                        </template>
+
                         <template v-for="target in targetSquares">
                             <div :class="'highlightCell highlight_' + queuedAction"
                                 :style="{ gridColumnStart: target[0] + 1, gridRowStart: target[1] + 1 }"
@@ -675,6 +681,12 @@ export default {
     width: 1fr;
     height: 1fr;
     z-index: 10;
+}
+.gameBoardCellSpacer {
+    aspect-ratio: 1;
+    margin: 1px;
+    z-index: 10;
+    transition: 300ms;
 }
 
 .highlightCell {

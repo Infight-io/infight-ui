@@ -72,7 +72,7 @@ export default {
 .gamePiece {
     /* background-color: #212529; */
     aspect-ratio: 1;
-    margin: 5px;
+    margin: 1px;
     z-index: 20;
     transition: 300ms;
     container-type: size;
