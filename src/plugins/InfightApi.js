@@ -65,6 +65,15 @@ export default {
                     method: 'post'
                 })
             },
+            spawnEnemy: async function (teamId, gameId, enemyType) {
+                return await axios({
+                    url: apiRoot + '/games/' + teamId + '/' + gameId + '/spawnEnemy',
+                    method: 'post',
+                    data: {
+                        enemyType: enemyType
+                    }
+                })
+            },
             deleteGame: async function (teamId, gameId) {
                 return await axios({
                     url: apiRoot + '/games/' + teamId + '/' + gameId,

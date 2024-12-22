@@ -51,7 +51,7 @@ export default {
             });
             // const playersWithPoints = this.game.GamePlayers.filter(player => player.stats.gamePoint !== undefined && player.stats.gamePoint > 0);
             return this.game.GamePlayers.sort((a, b) => {
-                
+
                 if (b.stats.gamePoint === a.stats.gamePoint) {
                     return b.stats.killedSomeone - a.stats.killedSomeone;
                 }
@@ -164,6 +164,17 @@ export default {
                 }).catch(err => {
                     console.log("Error with tickGame", err)
                     this.toast.error("Error ticking game.");
+                })
+        },
+        spawnEnemy(enemyType) {
+            const router = this.$router
+            this.$api.spawnEnemy(this.game.GuildId, this.game.id, enemyType)
+                .then(res => {
+                    console.log("spawned " + enemyType, res)
+                    this.refreshGame()
+                }).catch(err => {
+                    console.log("Error with spawnEnemy", err)
+                    this.toast.error("Error spawn enemy.");
                 })
         },
         deleteGame(event) {
@@ -399,14 +410,15 @@ export default {
                                         }} AP</strong>
                                     <strong v-if="getLoggedInGamePlayer().status == 'dead'"><span
                                             class="actionBtnDetail">You have </span>{{
-                                        getLoggedInGamePlayer().juryVotesToSpend }} JP</strong>
+                                                getLoggedInGamePlayer().juryVotesToSpend }} JP</strong>
                                     <br />
                                     <span v-if="game.status == 'active'" class="apCountdown">
                                         <vue-countdown
                                             :time="(new Date(game.nextTickTime)).getTime() - (new Date).getTime()"
                                             v-slot="{ days, hours, minutes, seconds }">
-                                            <span class="actionBtnDetail">Next AP in </span>~{{ hours ? hours + ':' : '' }}{{
-                                                minutes ? String(minutes).padStart(2, '0')+' min ':'' }}
+                                            <span class="actionBtnDetail">Next AP in </span>~{{ hours ? hours + ':' : ''
+                                            }}{{
+                                                minutes ? String(minutes).padStart(2, '0') + ' min ' : '' }}
                                         </vue-countdown>
                                     </span>
                                 </button>
@@ -475,7 +487,8 @@ export default {
                                 </button>
 
                                 <button type="button" @click="cancelMove" v-if="queuedAction != null"
-                                    class="btn btn-danger" aria-label="Close" v-tooltip="`Cancel any move-in-progress: esc`">
+                                    class="btn btn-danger" aria-label="Close"
+                                    v-tooltip="`Cancel any move-in-progress: esc`">
                                     🔙 <span class="actionBtnDetail">Cancel</span>
                                 </button>
                             </div>
@@ -499,7 +512,8 @@ export default {
                             <div class="alert alert-success" role="alert">
                                 <vue-countdown :time="(new Date(game.startTime)).getTime() - (new Date).getTime()"
                                     v-slot="{ days, hours, minutes, seconds }">
-                                    Game starts in: ~{{ hours ? hours + ':' : '' }}{{ minutes ? String(minutes).padStart(2,
+                                    Game starts in: ~{{ hours ? hours + ':' : '' }}{{ minutes ?
+                                        String(minutes).padStart(2,
                                     '0')+':':'' }}{{ String(seconds).padStart(2, '0') }}
                                 </vue-countdown>
                             </div>
@@ -511,7 +525,8 @@ export default {
                         </div>
                     </div>
                     <div v-if="game.suddenDeathRound > 0 && game.status == 'active'" class="alert alert-warning mt-3">
-                        <strong>Sudden Death!</strong> Lightning is about to strike the outer {{ game.suddenDeathRound }}
+                        <strong>Sudden Death!</strong> Lightning is about to strike the outer {{ game.suddenDeathRound
+                        }}
                         squares! Run for the middle!
                     </div>
                     <div class="gameBoard" :style="genGameboardStyle()">
@@ -538,6 +553,10 @@ export default {
                             <div class="fireSquare" v-if="objectLocation.type == 'fire'"
                                 :style="{ gridColumnStart: objectLocation.x + 1, gridRowStart: objectLocation.y + 1 }"
                                 v-tooltip="'Fires spread, watch out!'"></div>
+
+                            <div class="lootGoblin" v-if="objectLocation.type == 'lootGoblin'"
+                                :style="{ gridColumnStart: objectLocation.x + 1, gridRowStart: objectLocation.y + 1 }"
+                                v-tooltip="'Mofo is rich!'"></div>
                         </template>
 
                         <template v-for="blast in lightningLocations" v-if="game.status == 'active'">
@@ -574,6 +593,10 @@ export default {
                     <button @click="tickGame" class="btn btn-primary" v-if="devMode && game.status == 'active'">
                         ⏰ <span class="actionBtnDetail">Tick Game</span>
                     </button>
+                    <button @click="spawnEnemy('lootGoblin')" class="btn btn-info"
+                        v-if="devMode && game.status == 'active'">
+                        🦹‍♂️ <span class="actionBtnDetail">lootyG</span>
+                    </button>
                     <button @click="deleteGame" class="btn btn-danger" v-if="devMode">
                         💀 <span class="actionBtnDetail">Delete Game</span>
                     </button>
@@ -583,17 +606,19 @@ export default {
                 <div class="card col-lg-6 offset-lg-3 p-4">
                     <h2 class="text-center">🏆 Scoreboard 🏆</h2>
                     <p class="small">
-                        Points are earned by holding the <strong>Goal Square (<img src="/img/GoalBlock.png" style="height: 16px;margin:0 5px;" />)</strong>
-                         when the game ticks. First player to <strong>five points</strong> wins!
-                        Band together to shove 'em off of there if you have to! 
+                        Points are earned by holding the <strong>Goal Square (<img src="/img/GoalBlock.png"
+                                style="height: 16px;margin:0 5px;" />)</strong>
+                        when the game ticks. First player to <strong>five points</strong> wins!
+                        Band together to shove 'em off of there if you have to!
                     </p>
                     <ol v-if="sortedScoreboard.length > 0">
                         <li v-for="gp in sortedScoreboard">
-                            <img :src="'https://cdn.discordapp.com/avatars/' + gp.Player.id + '/' + gp.Player.avatar + '.png'" class="scoreboardAvatar" v-tooltip="gp.Player.name" />
+                            <img :src="'https://cdn.discordapp.com/avatars/' + gp.Player.id + '/' + gp.Player.avatar + '.png'"
+                                class="scoreboardAvatar" v-tooltip="gp.Player.name" />
                             <strong>{{ gp.Player.name }}</strong> {{ gp.stats.gamePoint }} points
                             <span class="d-none d-sm-none d-md-inline">
-                                {{ gp.stats.killedSomeone? `- ${gp.stats.killedSomeone} kills`:`` }}
-                                {{ gp.stats.wasKilled? `- ${gp.stats.wasKilled} deaths`:`` }}
+                                {{ gp.stats.killedSomeone ? `- ${gp.stats.killedSomeone} kills` : `` }}
+                                {{ gp.stats.wasKilled ? `- ${gp.stats.wasKilled} deaths` : `` }}
                             </span>
                         </li>
                     </ol>
@@ -622,6 +647,7 @@ export default {
     height: 30px;
     margin: 0 10px;
 }
+
 .gameBoard {
     display: grid;
     transition: 300ms;
@@ -682,6 +708,7 @@ export default {
     height: 1fr;
     z-index: 10;
 }
+
 .gameBoardCellSpacer {
     aspect-ratio: 1;
     margin: 1px;
@@ -719,17 +746,49 @@ export default {
 }
 
 @keyframes shake {
-  0% { transform: translate(1px, 1px) rotate(0deg); }
-  10% { transform: translate(-1px, -1px) rotate(-1deg); }
-  20% { transform: translate(-1px, 0px) rotate(1deg); }
-  30% { transform: translate(1px, 1px) rotate(0deg); }
-  40% { transform: translate(1px, -1px) rotate(1deg); }
-  50% { transform: translate(-1px, 1px) rotate(-1deg); }
-  60% { transform: translate(-1px, 1px) rotate(0deg); }
-  70% { transform: translate(1px, 1px) rotate(-1deg); }
-  80% { transform: translate(-1px, -1px) rotate(3deg); }
-  90% { transform: translate(1px, 1px) rotate(0deg); }
-  100% { transform: translate(1px, -1px) rotate(-1deg); }
+    0% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-1px, -1px) rotate(-1deg);
+    }
+
+    20% {
+        transform: translate(-1px, 0px) rotate(1deg);
+    }
+
+    30% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+
+    40% {
+        transform: translate(1px, -1px) rotate(1deg);
+    }
+
+    50% {
+        transform: translate(-1px, 1px) rotate(-1deg);
+    }
+
+    60% {
+        transform: translate(-1px, 1px) rotate(0deg);
+    }
+
+    70% {
+        transform: translate(1px, 1px) rotate(-1deg);
+    }
+
+    80% {
+        transform: translate(-1px, -1px) rotate(3deg);
+    }
+
+    90% {
+        transform: translate(1px, 1px) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(1px, -1px) rotate(-1deg);
+    }
 }
 
 .fireSquare {
@@ -739,7 +798,17 @@ export default {
     background-image: url(/img/bonfire.webp);
     background-repeat: no-repeat;
     background-position: center;
-    background-size:contain;
+    background-size: contain;
+}
+
+.lootGoblin {
+    z-index: 25;
+    width: 1fr;
+    height: 1fr;
+    background-image: url(/img/lootGoblinTemp.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 .goalSquare {
@@ -749,7 +818,7 @@ export default {
     background-image: url(/img/GoalBlock.png);
     background-repeat: no-repeat;
     background-position: center;
-    background-size:contain;
+    background-size: contain;
 }
 
 .lightningContainer {
