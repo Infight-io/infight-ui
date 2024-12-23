@@ -732,6 +732,7 @@ export default {
     background-repeat: no-repeat;
     background-position-x: 0;
     background-size: cover;
+    image-rendering: pixelated;
 }
 
 .boltContainer {
@@ -743,6 +744,7 @@ export default {
     background-repeat: no-repeat;
     background-position-x: 0;
     background-size: cover;
+    image-rendering: pixelated;
 }
 
 @keyframes shake {
@@ -799,16 +801,18 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+    image-rendering: pixelated;
 }
 
 .lootGoblin {
     z-index: 25;
     width: 1fr;
     height: 1fr;
-    background-image: url(/img/lootGoblinTemp.webp);
+    background-image: url(/img/lootGoblin.gif);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+    image-rendering: pixelated;
 }
 
 .goalSquare {
@@ -829,6 +833,7 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
+    image-rendering: pixelated;
 }
 
 @keyframes heartBounce {
